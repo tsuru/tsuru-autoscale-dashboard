@@ -2,9 +2,9 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = '5ap5%5wcphal_jb3b*8(9=_8(r^f1=pa6$o9_mec8bk79s7r0%'
+SECRET_KEY = os.environ.get("SECRET_KEY", "secret-key")
 
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True") in ["True", "1", "true"]
 
 ALLOWED_HOSTS = []
 
