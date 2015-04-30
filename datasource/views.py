@@ -1,5 +1,10 @@
 from django.shortcuts import render
 
+from datasource.forms import DataSourceForm
+
 
 def new(request):
-    return render(request, "datasource/new.html")
+    context = {
+        "form": DataSourceForm()
+    }
+    return render(request, "datasource/new.html", context)
