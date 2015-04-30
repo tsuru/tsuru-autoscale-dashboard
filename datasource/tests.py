@@ -24,4 +24,17 @@ class NewTestCase(TestCase):
         self.assertTrue(response.context['form'].is_valid())
 
 
-class DataSourceTestCase(TestCase)
+class DataSourceTestCase(TestCase):
+    def test_required_fields(self):
+        fields = {
+            "url": True,
+            "method": True,
+            "name": True,
+            "body": False,
+            "headers": False,
+        }
+
+        form = DataSourceForm()
+
+        for field, required in fields.items():
+            self.assertEqual(form.fields[field].required, required)
