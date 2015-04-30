@@ -1,6 +1,10 @@
 <html>
   <header></header>
   <body>
-    {{ form.as_p }}
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <p><input type="submit" />
+    </form>
   </body>
 </html>

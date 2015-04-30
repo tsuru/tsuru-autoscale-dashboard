@@ -5,5 +5,5 @@ class DataSourceForm(forms.Form):
     name = forms.CharField()
     url = forms.CharField()
     method = forms.CharField()
-    body = forms.CharField()
-    headers = forms.CharField()
+    body = forms.CharField(required=False)
+    headers = forms.CharField(required=False)
