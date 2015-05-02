@@ -1,6 +1,11 @@
 from django.test import TestCase
 
 from datasource.forms import DataSourceForm
+from datasource import client
+
+import httpretty
+
+import os
 
 
 class NewTestCase(TestCase):
@@ -38,3 +43,18 @@ class DataSourceTestCase(TestCase):
 
         for field, required in fields.items():
             self.assertEqual(form.fields[field].required, required)
+
+
+class ClientTestCase(TestCase):
+    def test_new(self):
+        os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
+        httpretty.enable()
+        httpretty.register_uri(
+            httpretty.POST,
+            "http://autoscalehost.com/datasource",
+        )
+
+        client.new({})
+
+        httpretty.disable()
+        httpretty.reset()
