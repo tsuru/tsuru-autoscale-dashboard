@@ -7,3 +7,6 @@ deps: clean
 test: deps
 	@./manage.py test
 	@flake8 .
+
+run: deps
+	@./manage.py runserver
