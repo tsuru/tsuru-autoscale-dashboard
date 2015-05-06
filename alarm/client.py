@@ -12,3 +12,9 @@ def new(data):
     url = "{}/alarm".format(host())
     response = requests.post(url, data=json.dumps(data))
     return response
+
+
+def list():
+    url = "{}/alarm".format(host())
+    response = requests.get(url)
+    return response
