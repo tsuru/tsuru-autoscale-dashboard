@@ -17,6 +17,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'datasource',
+    'alarm',
+    'action',
 )
 
 MIDDLEWARE_CLASSES = (
