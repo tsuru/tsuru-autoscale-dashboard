@@ -4,18 +4,19 @@ from datasource.forms import DataSourceForm
 from datasource import client
 
 import httpretty
+import mock
 
 import os
 
 
 class NewTestCase(TestCase):
     def test_new(self):
-        response = self.client.get("/datasource/")
+        response = self.client.get("/datasource/new/")
         self.assertTemplateUsed(response, "datasource/new.html")
         self.assertIsInstance(response.context['form'], DataSourceForm)
 
     def test_new_invalid_post(self):
-        response = self.client.post("/datasource/", {})
+        response = self.client.post("/datasource/new/", {})
         self.assertFalse(response.context['form'].is_valid())
 
     def test_new_post(self):
@@ -24,9 +25,17 @@ class NewTestCase(TestCase):
             "name": "name",
             "method": "GET",
         }
-        response = self.client.post("/datasource/", data)
+        response = self.client.post("/datasource/new/", data)
         self.assertEquals(response.context['form'].errors, {})
         self.assertTrue(response.context['form'].is_valid())
+
+    @mock.patch("datasource.client.list")
+    def test_list(self, list_mock):
+        response = self.client.get("/datasource/")
+
+        self.assertTemplateUsed(response, "datasource/list.html")
+        self.assertIn('list', response.context)
+        list_mock.assert_called_with()
 
 
 class DataSourceTestCase(TestCase):
