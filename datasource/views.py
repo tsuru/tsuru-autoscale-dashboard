@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from datasource.forms import DataSourceForm
 from datasource import client
@@ -6,8 +6,11 @@ from datasource import client
 
 def new(request):
     form = DataSourceForm(request.POST or None)
+
     if form.is_valid():
-        pass
+        client.new(form.cleaned_data)
+        return redirect('/datasource/')
+
     context = {"form": form}
     return render(request, "datasource/new.html", context)
 

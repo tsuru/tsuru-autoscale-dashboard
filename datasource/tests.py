@@ -20,15 +20,21 @@ class NewTestCase(TestCase):
         response = self.client.post("/datasource/new/", {})
         self.assertFalse(response.context['form'].is_valid())
 
-    def test_new_post(self):
+    @mock.patch("datasource.client.list")
+    @mock.patch("datasource.client.new")
+    def test_new_post(self, new_mock, list_mock):
         data = {
-            "url": "someurl",
-            "name": "name",
-            "method": "GET",
+            'url': u'someurl',
+            'body': u'',
+            'headers': u'',
+            'name': u'name',
+            'method': u'GET',
         }
+
         response = self.client.post("/datasource/new/", data)
-        self.assertEquals(response.context['form'].errors, {})
-        self.assertTrue(response.context['form'].is_valid())
+
+        self.assertRedirects(response, '/datasource/')
+        new_mock.assert_called_with(data)
 
     @mock.patch("datasource.client.list")
     def test_list(self, list_mock):
