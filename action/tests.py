@@ -3,8 +3,19 @@ from django.test import TestCase
 from action import client
 
 import httpretty
+import mock
 
 import os
+
+
+class ListTestCase(TestCase):
+    @mock.patch("action.client.list")
+    def test_list(self, list_mock):
+        response = self.client.get("/action/")
+
+        self.assertTemplateUsed(response, "action/list.html")
+        self.assertIn('list', response.context)
+        list_mock.assert_called_with()
 
 
 class ClientTestCase(TestCase):
