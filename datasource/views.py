@@ -5,7 +5,7 @@ from datasource import client
 
 
 def new(request):
-    form = DataSourceForm(request.POST or {})
+    form = DataSourceForm(request.POST or None)
     if form.is_valid():
         pass
     context = {"form": form}

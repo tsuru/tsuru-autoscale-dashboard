@@ -14,6 +14,7 @@ class NewTestCase(TestCase):
         response = self.client.get("/datasource/new/")
         self.assertTemplateUsed(response, "datasource/new.html")
         self.assertIsInstance(response.context['form'], DataSourceForm)
+        self.assertFalse(response.context['form'].is_bound)
 
     def test_new_invalid_post(self):
         response = self.client.post("/datasource/new/", {})
