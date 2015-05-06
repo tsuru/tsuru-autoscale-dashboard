@@ -23,3 +23,12 @@ class ClientTestCase(TestCase):
         )
 
         client.list()
+
+    def test_new(self):
+        os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
+        httpretty.register_uri(
+            httpretty.POST,
+            "http://autoscalehost.com/action",
+        )
+
+        client.new({})
