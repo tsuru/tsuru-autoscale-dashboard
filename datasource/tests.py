@@ -58,3 +58,16 @@ class ClientTestCase(TestCase):
 
         httpretty.disable()
         httpretty.reset()
+
+    def test_list(self):
+        os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
+        httpretty.enable()
+        httpretty.register_uri(
+            httpretty.GET,
+            "http://autoscalehost.com/datasource",
+        )
+
+        client.list()
+
+        httpretty.disable()
+        httpretty.reset()
