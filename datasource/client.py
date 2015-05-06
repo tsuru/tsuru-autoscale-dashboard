@@ -1,4 +1,5 @@
 import os
+import json
 
 import requests
 
@@ -9,7 +10,7 @@ def host():
 
 def new(data):
     url = "{}/datasource".format(host())
-    response = requests.post(url, data=data)
+    response = requests.post(url, data=json.dumps(data))
     return response
 
 

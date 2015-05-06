@@ -3,7 +3,7 @@
   <body>
     <ul>
       {% for item in list %}
-      <li>{{ item }}</li>
+      <li>{{ item.Name }} - {{ item.Method }} on {{ item.URL }}</li>
       {% endfor %}
     </ul>
   </body>

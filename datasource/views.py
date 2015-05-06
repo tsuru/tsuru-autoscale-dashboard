@@ -16,7 +16,7 @@ def new(request):
 
 
 def list(request):
-    datasources = client.list()
+    datasources = client.list().json()
     context = {
         "list": datasources,
     }
