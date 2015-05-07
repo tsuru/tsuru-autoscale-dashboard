@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
 
 from alarm.forms import AlarmForm
 from alarm import client
@@ -9,7 +10,7 @@ def new(request):
 
     if form.is_valid():
         client.new(form.cleaned_data)
-        return redirect('/alarm/')
+        return redirect(reverse('alarm-list'))
 
     context = {"form": form}
     return render(request, "alarm/new.html", context)

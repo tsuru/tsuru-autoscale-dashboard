@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
 
 from action.forms import ActionForm
 from action import client
@@ -9,7 +10,7 @@ def new(request):
 
     if form.is_valid():
         client.new(form.cleaned_data)
-        return redirect('/action/')
+        return redirect(reverse('action-list'))
 
     context = {"form": form}
     return render(request, "action/new.html", context)
