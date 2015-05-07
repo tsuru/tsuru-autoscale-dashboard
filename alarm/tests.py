@@ -68,3 +68,15 @@ class ClientTestCase(TestCase):
         )
 
         client.list()
+
+
+class AlarmFormTestCase(TestCase):
+    def test_required_fields(self):
+        fields = {
+            "name": True,
+        }
+
+        form = AlarmForm()
+
+        for field, required in fields.items():
+            self.assertEqual(form.fields[field].required, required)

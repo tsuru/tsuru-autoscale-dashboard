@@ -45,7 +45,7 @@ class NewTestCase(TestCase):
         list_mock.assert_called_with()
 
 
-class DataSourceTestCase(TestCase):
+class DataSourceFormTestCase(TestCase):
     def test_required_fields(self):
         fields = {
             "url": True,
