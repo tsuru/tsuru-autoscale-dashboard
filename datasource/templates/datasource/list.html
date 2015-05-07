@@ -1,10 +1,9 @@
-<html>
-  <header></header>
-  <body>
+{% extends 'base.html' %}
+
+{% block content %}
     <ul>
       {% for item in list %}
       <li>{{ item.Name }} - {{ item.Method }} on {{ item.URL }}</li>
       {% endfor %}
     </ul>
-  </body>
-</html>
+{% endblock %}

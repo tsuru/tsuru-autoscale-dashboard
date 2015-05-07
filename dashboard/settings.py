@@ -16,6 +16,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'bootstrap3',
+
     'datasource',
     'alarm',
     'action',
@@ -37,7 +39,7 @@ ROOT_URLCONF = 'dashboard.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'dashboard/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
