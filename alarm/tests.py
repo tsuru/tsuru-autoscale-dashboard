@@ -25,6 +25,9 @@ class NewTestCase(TestCase):
     def test_new_post(self, new_mock, list_mock):
         data = {
             'name': u'name',
+            'expression': u'x > 10',
+            'enabled': True,
+            'wait': 10,
         }
 
         response = self.client.post("/alarm/new/", data)
@@ -74,6 +77,9 @@ class AlarmFormTestCase(TestCase):
     def test_required_fields(self):
         fields = {
             "name": True,
+            "expression": True,
+            "enabled": True,
+            "wait": True,
         }
 
         form = AlarmForm()
