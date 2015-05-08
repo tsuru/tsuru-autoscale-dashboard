@@ -20,14 +20,19 @@ class NewTestCase(TestCase):
         response = self.client.post("/alarm/new/", {})
         self.assertFalse(response.context['form'].is_valid())
 
+    @mock.patch("datasource.client")
     @mock.patch("alarm.client.list")
     @mock.patch("alarm.client.new")
-    def test_new_post(self, new_mock, list_mock):
+    def test_new_post(self, new_mock, list_mock, ds_client_mock):
+        json_mock = mock.Mock()
+        json_mock.json.return_value = [{"Name": "bla"}]
+        ds_client_mock.list.return_value = json_mock
         data = {
             'name': u'name',
             'expression': u'x > 10',
             'enabled': True,
             'wait': 10,
+            'datasource': 'bla',
         }
 
         response = self.client.post("/alarm/new/", data)
