@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
+from django.contrib import messages
 
 from alarm.forms import AlarmForm
 from alarm import client
@@ -10,6 +11,7 @@ def new(request):
 
     if form.is_valid():
         client.new(form.cleaned_data)
+        messages.success(request, u"Alarm saved.")
         return redirect(reverse('alarm-list'))
 
     context = {"form": form}
