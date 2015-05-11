@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.core.urlresolvers import reverse
 
 from alarm.forms import AlarmForm
 from alarm import client
@@ -7,6 +8,16 @@ import httpretty
 import mock
 
 import os
+
+
+class RemoveTestCase(TestCase):
+    @mock.patch("alarm.client.list")
+    @mock.patch("alarm.client.remove")
+    def test_remove(self, remove_mock, list_mock):
+        response = self.client.delete(reverse("alarm-remove", args=["name"]))
+
+        self.assertRedirects(response, reverse("alarm-list"))
+        remove_mock.assert_called_with("name")
 
 
 class NewTestCase(TestCase):

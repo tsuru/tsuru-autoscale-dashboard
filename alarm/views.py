@@ -24,3 +24,9 @@ def list(request):
         "list": alarms,
     }
     return render(request, "alarm/list.html", context)
+
+
+def remove(request, name):
+    client.remove(name)
+    messages.success(request, u"Alarm {} saved.".format(name))
+    return redirect(reverse('alarm-list'))
