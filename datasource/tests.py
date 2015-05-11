@@ -36,6 +36,8 @@ class NewTestCase(TestCase):
         self.assertRedirects(response, '/datasource/')
         new_mock.assert_called_with(data)
 
+
+class DataSourceListTest(TestCase):
     @mock.patch("datasource.client.list")
     def test_list(self, list_mock):
         response = self.client.get("/datasource/")
