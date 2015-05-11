@@ -83,6 +83,15 @@ class ClientTestCase(TestCase):
 
         client.list()
 
+    def test_remove(self):
+        os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
+        httpretty.register_uri(
+            httpretty.DELETE,
+            "http://autoscalehost.com/alarm/name",
+        )
+
+        client.remove("name")
+
 
 class AlarmFormTestCase(TestCase):
     def test_required_fields(self):

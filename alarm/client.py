@@ -18,3 +18,9 @@ def list():
     url = "{}/alarm".format(host())
     response = requests.get(url)
     return response
+
+
+def remove(name):
+    url = "{}/alarm/{}".format(host(), name)
+    response = requests.delete(url)
+    return response
