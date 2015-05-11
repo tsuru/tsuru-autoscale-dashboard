@@ -28,4 +28,5 @@ def list(request):
 
 def remove(request, name):
     client.remove(name)
+    messages.success(request, u"Action {} removed.".format(name))
     return redirect(reverse('action-list'))
