@@ -88,3 +88,12 @@ class ClientTestCase(TestCase):
         )
 
         client.list()
+
+    def test_remove(self):
+        os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
+        httpretty.register_uri(
+            httpretty.DELETE,
+            "http://autoscalehost.com/datasource/name",
+        )
+
+        client.remove(name="name")

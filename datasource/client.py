@@ -18,3 +18,9 @@ def list():
     url = "{}/datasource".format(host())
     response = requests.get(url)
     return response
+
+
+def remove(name):
+    url = "{}/datasource/{}".format(host(), name)
+    response = requests.delete(url)
+    return response
