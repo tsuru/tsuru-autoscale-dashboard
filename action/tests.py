@@ -9,6 +9,16 @@ import mock
 import os
 
 
+class RemoveTestCase(TestCase):
+    @mock.patch("action.client.list")
+    @mock.patch("action.client.remove")
+    def test_new_post(self, remove_mock, list_mock):
+        response = self.client.delete("/action/name/")
+
+        self.assertRedirects(response, '/action/')
+        remove_mock.assert_called_with("name")
+
+
 class NewTestCase(TestCase):
     def test_new(self):
         response = self.client.get("/action/new/")

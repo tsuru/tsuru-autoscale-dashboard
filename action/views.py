@@ -24,3 +24,8 @@ def list(request):
         "list": actions,
     }
     return render(request, "action/list.html", context)
+
+
+def remove(request, name):
+    client.remove(name)
+    return redirect(reverse('action-list'))
