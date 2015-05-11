@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.core.urlresolvers import reverse
 
 from action.forms import ActionForm
 from action import client
@@ -13,7 +14,7 @@ class RemoveTestCase(TestCase):
     @mock.patch("action.client.list")
     @mock.patch("action.client.remove")
     def test_new_post(self, remove_mock, list_mock):
-        response = self.client.delete("/action/name/")
+        response = self.client.delete(reverse("action-remove", args=["name"]))
 
         self.assertRedirects(response, '/action/')
         remove_mock.assert_called_with("name")
@@ -21,13 +22,13 @@ class RemoveTestCase(TestCase):
 
 class NewTestCase(TestCase):
     def test_new(self):
-        response = self.client.get("/action/new/")
+        response = self.client.get(reverse("action-new"))
         self.assertTemplateUsed(response, "action/new.html")
         self.assertIsInstance(response.context['form'], ActionForm)
         self.assertFalse(response.context['form'].is_bound)
 
     def test_new_invalid_post(self):
-        response = self.client.post("/action/new/", {})
+        response = self.client.post(reverse("action-new"), {})
         self.assertFalse(response.context['form'].is_valid())
 
     @mock.patch("action.client.list")
@@ -41,16 +42,16 @@ class NewTestCase(TestCase):
             'method': u'GET',
         }
 
-        response = self.client.post("/action/new/", data)
+        response = self.client.post(reverse("action-new"), data)
 
-        self.assertRedirects(response, '/action/')
+        self.assertRedirects(response, reverse("action-list"))
         new_mock.assert_called_with(data)
 
 
 class ListTestCase(TestCase):
     @mock.patch("action.client.list")
     def test_list(self, list_mock):
-        response = self.client.get("/action/")
+        response = self.client.get(reverse("action-list"))
 
         self.assertTemplateUsed(response, "action/list.html")
         self.assertIn('list', response.context)
