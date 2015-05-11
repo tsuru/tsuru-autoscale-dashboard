@@ -73,6 +73,15 @@ class ClientTestCase(TestCase):
 
         client.new({})
 
+    def test_remove(self):
+        os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
+        httpretty.register_uri(
+            httpretty.DELETE,
+            "http://autoscalehost.com/action/name",
+        )
+
+        client.remove("name")
+
 
 class ActionFormTestCase(TestCase):
     def test_required_fields(self):
