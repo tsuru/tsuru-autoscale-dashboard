@@ -8,7 +8,7 @@
     </p>
     <ul>
       {% for item in list %}
-      <li>{{ item.name }} - {{ item.expression }}</li>
+      <li>{{ item.name }} - {{ item.expression }} <a href="{% url 'alarm-remove' item.name %}">remove</a></li>
       {% endfor %}
     </ul>
 {% endblock %}
