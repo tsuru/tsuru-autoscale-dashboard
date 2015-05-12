@@ -3,12 +3,14 @@ from django import forms
 
 def datasource_list():
     from datasource import client
-    return [(ds['Name'], ds['Name']) for ds in client.list().json()]
+    dl = client.list().json() or []
+    return [(ds['Name'], ds['Name']) for ds in dl]
 
 
 def action_list():
     from action import client
-    return [(ds['Name'], ds['Name']) for ds in client.list().json()]
+    al = client.list().json() or []
+    return [(ds['Name'], ds['Name']) for ds in al]
 
 
 class AlarmForm(forms.Form):
