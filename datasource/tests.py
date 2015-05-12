@@ -22,13 +22,13 @@ class RemoveTestCase(TestCase):
 
 class NewTestCase(TestCase):
     def test_new(self):
-        response = self.client.get("/datasource/new/")
+        response = self.client.get(reverse("datasource-new"))
         self.assertTemplateUsed(response, "datasource/new.html")
         self.assertIsInstance(response.context['form'], DataSourceForm)
         self.assertFalse(response.context['form'].is_bound)
 
     def test_new_invalid_post(self):
-        response = self.client.post("/datasource/new/", {})
+        response = self.client.post(reverse("datasource-new"), {})
         self.assertFalse(response.context['form'].is_valid())
 
     @mock.patch("datasource.client.list")
@@ -42,16 +42,16 @@ class NewTestCase(TestCase):
             'method': u'GET',
         }
 
-        response = self.client.post("/datasource/new/", data)
+        response = self.client.post(reverse("datasource-new"), data)
 
-        self.assertRedirects(response, '/datasource/')
+        self.assertRedirects(response, reverse("datasource-list"))
         new_mock.assert_called_with(data)
 
 
 class DataSourceListTest(TestCase):
     @mock.patch("datasource.client.list")
     def test_list(self, list_mock):
-        response = self.client.get("/datasource/")
+        response = self.client.get(reverse("datasource-list"))
 
         self.assertTemplateUsed(response, "datasource/list.html")
         self.assertIn('list', response.context)
