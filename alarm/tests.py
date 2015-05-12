@@ -22,13 +22,13 @@ class RemoveTestCase(TestCase):
 
 class NewTestCase(TestCase):
     def test_new(self):
-        response = self.client.get("/alarm/new/")
+        response = self.client.get(reverse("alarm-new"))
         self.assertTemplateUsed(response, "alarm/new.html")
         self.assertIsInstance(response.context['form'], AlarmForm)
         self.assertFalse(response.context['form'].is_bound)
 
     def test_new_invalid_post(self):
-        response = self.client.post("/alarm/new/", {})
+        response = self.client.post(reverse("alarm-new"), {})
         self.assertFalse(response.context['form'].is_valid())
 
     @mock.patch("action.client")
@@ -52,16 +52,16 @@ class NewTestCase(TestCase):
             'actions': ['bla'],
         }
 
-        response = self.client.post("/alarm/new/", data)
+        response = self.client.post(reverse("alarm-new"), data)
 
-        self.assertRedirects(response, '/alarm/')
+        self.assertRedirects(response, reverse("alarm-list"))
         new_mock.assert_called_with(data)
 
 
 class ListTestCase(TestCase):
     @mock.patch("alarm.client.list")
     def test_list(self, list_mock):
-        response = self.client.get("/alarm/")
+        response = self.client.get(reverse("alarm-list"))
 
         self.assertTemplateUsed(response, "alarm/list.html")
         self.assertIn('list', response.context)
