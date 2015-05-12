@@ -16,7 +16,7 @@ def action_list():
 class AlarmForm(forms.Form):
     name = forms.CharField()
     expression = forms.CharField()
-    enabled = forms.BooleanField()
+    enabled = forms.BooleanField(initial=True)
     wait = forms.IntegerField()
     datasource = forms.ChoiceField(choices=datasource_list)
     actions = forms.MultipleChoiceField(choices=action_list)
