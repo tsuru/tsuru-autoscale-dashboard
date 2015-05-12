@@ -28,5 +28,5 @@ def list(request):
 
 def remove(request, name):
     client.remove(name)
-    messages.success(request, u"Alarm {} saved.".format(name))
+    messages.success(request, u"Alarm {} removed.".format(name))
     return redirect(reverse('alarm-list'))
