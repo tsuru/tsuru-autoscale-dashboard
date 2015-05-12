@@ -24,3 +24,9 @@ def list(request):
         "list": datasources,
     }
     return render(request, "datasource/list.html", context)
+
+
+def remove(request, name):
+    client.remove(name)
+    messages.success(request, u"Data source  {} remove.".format(name))
+    return redirect(reverse('datasource-list'))

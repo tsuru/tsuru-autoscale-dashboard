@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.core.urlresolvers import reverse
 
 from datasource.forms import DataSourceForm
 from datasource import client
@@ -7,6 +8,16 @@ import httpretty
 import mock
 
 import os
+
+
+class RemoveTestCase(TestCase):
+    @mock.patch("datasource.client.list")
+    @mock.patch("datasource.client.remove")
+    def test_new_post(self, remove_mock, list_mock):
+        response = self.client.delete(reverse("datasource-remove", args=["name"]))
+
+        self.assertRedirects(response, reverse("datasource-list"))
+        remove_mock.assert_called_with("name")
 
 
 class NewTestCase(TestCase):
