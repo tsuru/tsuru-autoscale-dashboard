@@ -3,6 +3,9 @@
 {% block title %}Actions{% endblock %}
 
 {% block content %}
+    <p>
+    <a href="{% url 'action-new' %}">new</a>
+    </p>
     <ul>
       {% for item in list %}
 
