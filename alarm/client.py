@@ -8,25 +8,29 @@ def host():
     return os.environ.get("AUTOSCALE_HOST", "")
 
 
-def new(data):
+def new(data, token):
     url = "{}/alarm".format(host())
-    response = requests.post(url, data=json.dumps(data))
+    headers = {"Authorization": token}
+    response = requests.post(url, data=json.dumps(data), headers=headers)
     return response
 
 
-def list():
+def list(token):
     url = "{}/alarm".format(host())
-    response = requests.get(url)
+    headers = {"Authorization": token}
+    response = requests.get(url, headers=headers)
     return response
 
 
-def remove(name):
+def remove(name, token):
     url = "{}/alarm/{}".format(host(), name)
-    response = requests.delete(url)
+    headers = {"Authorization": token}
+    response = requests.delete(url, headers=headers)
     return response
 
 
-def get(name):
+def get(name, token):
     url = "{}/alarm/{}".format(host(), name)
-    response = requests.get(url)
+    headers = {"Authorization": token}
+    response = requests.get(url, headers=headers)
     return response
