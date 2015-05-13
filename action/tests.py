@@ -93,6 +93,17 @@ class ClientTestCase(TestCase):
 
         client.remove("name")
 
+    def test_get(self):
+        os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
+        httpretty.register_uri(
+            httpretty.GET,
+            "http://autoscalehost.com/action/name",
+            "result",
+        )
+
+        result = client.get("name")
+        self.assertEqual(result.text, "result")
+
 
 class ActionFormTestCase(TestCase):
     def test_required_fields(self):
