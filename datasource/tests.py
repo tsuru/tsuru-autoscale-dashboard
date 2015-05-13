@@ -13,11 +13,12 @@ import os
 class RemoveTestCase(TestCase):
     @mock.patch("datasource.client.list")
     @mock.patch("datasource.client.remove")
-    def test_new_post(self, remove_mock, list_mock):
-        response = self.client.delete(reverse("datasource-remove", args=["name"]))
+    def test_remove(self, remove_mock, list_mock):
+        url = "{}?TSURU_TOKEN=bla".format(reverse("datasource-remove", args=["name"]))
+        response = self.client.delete(url)
 
         self.assertRedirects(response, reverse("datasource-list"))
-        remove_mock.assert_called_with("name")
+        remove_mock.assert_called_with("name", "bla")
 
 
 class NewTestCase(TestCase):
@@ -42,20 +43,22 @@ class NewTestCase(TestCase):
             'method': u'GET',
         }
 
-        response = self.client.post(reverse("datasource-new"), data)
+        url = "{}?TSURU_TOKEN=bla".format(reverse("datasource-new"))
+        response = self.client.post(url, data)
 
         self.assertRedirects(response, reverse("datasource-list"))
-        new_mock.assert_called_with(data)
+        new_mock.assert_called_with(data, "bla")
 
 
 class DataSourceListTest(TestCase):
     @mock.patch("datasource.client.list")
     def test_list(self, list_mock):
-        response = self.client.get(reverse("datasource-list"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("datasource-list"))
+        response = self.client.get(url)
 
         self.assertTemplateUsed(response, "datasource/list.html")
         self.assertIn('list', response.context)
-        list_mock.assert_called_with()
+        list_mock.assert_called_with("bla")
 
 
 class DataSourceFormTestCase(TestCase):
