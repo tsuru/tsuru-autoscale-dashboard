@@ -10,7 +10,8 @@ def new(request):
     form = AlarmForm(request.POST or None)
 
     if form.is_valid():
-        client.new(form.cleaned_data)
+        token = request.GET.get("TSURU_TOKEN")
+        client.new(form.cleaned_data, token)
         messages.success(request, u"Alarm saved.")
         return redirect(reverse('alarm-list'))
 
@@ -19,7 +20,8 @@ def new(request):
 
 
 def list(request):
-    alarms = client.list().json()
+    token = request.GET.get("TSURU_TOKEN")
+    alarms = client.list(token).json()
     context = {
         "list": alarms,
     }
@@ -27,6 +29,7 @@ def list(request):
 
 
 def remove(request, name):
-    client.remove(name)
+    token = request.GET.get("TSURU_TOKEN")
+    client.remove(name, token)
     messages.success(request, u"Alarm {} removed.".format(name))
     return redirect(reverse('alarm-list'))

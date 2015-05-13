@@ -14,10 +14,11 @@ class RemoveTestCase(TestCase):
     @mock.patch("alarm.client.list")
     @mock.patch("alarm.client.remove")
     def test_remove(self, remove_mock, list_mock):
-        response = self.client.delete(reverse("alarm-remove", args=["name"]))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-remove", args=["name"]))
+        response = self.client.delete(url)
 
         self.assertRedirects(response, reverse("alarm-list"))
-        remove_mock.assert_called_with("name")
+        remove_mock.assert_called_with("name", "bla")
 
 
 class NewTestCase(TestCase):
@@ -52,20 +53,22 @@ class NewTestCase(TestCase):
             'actions': ['bla'],
         }
 
-        response = self.client.post(reverse("alarm-new"), data)
+        url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-new"))
+        response = self.client.post(url, data)
 
         self.assertRedirects(response, reverse("alarm-list"))
-        new_mock.assert_called_with(data)
+        new_mock.assert_called_with(data, "bla")
 
 
 class ListTestCase(TestCase):
     @mock.patch("alarm.client.list")
     def test_list(self, list_mock):
-        response = self.client.get(reverse("alarm-list"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-list"))
+        response = self.client.get(url)
 
         self.assertTemplateUsed(response, "alarm/list.html")
         self.assertIn('list', response.context)
-        list_mock.assert_called_with()
+        list_mock.assert_called_with("bla")
 
 
 class ClientTestCase(TestCase):
