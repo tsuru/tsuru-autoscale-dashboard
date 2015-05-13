@@ -10,7 +10,8 @@ def new(request):
     form = ActionForm(request.POST or None)
 
     if form.is_valid():
-        client.new(form.cleaned_data)
+        token = request.GET.get("TSURU_TOKEN")
+        client.new(form.cleaned_data, token)
         messages.success(request, u"Action saved.")
         return redirect(reverse('action-list'))
 
@@ -19,7 +20,8 @@ def new(request):
 
 
 def list(request):
-    actions = client.list().json()
+    token = request.GET.get("TSURU_TOKEN")
+    actions = client.list(token).json()
     context = {
         "list": actions,
     }
@@ -27,7 +29,8 @@ def list(request):
 
 
 def get(request, name):
-    action = client.get(name).json()
+    token = request.GET.get("TSURU_TOKEN")
+    action = client.get(name, token).json()
     context = {
         "item": action,
     }
@@ -35,6 +38,7 @@ def get(request, name):
 
 
 def remove(request, name):
-    client.remove(name)
+    token = request.GET.get("TSURU_TOKEN")
+    client.remove(name, token)
     messages.success(request, u"Action {} removed.".format(name))
     return redirect(reverse('action-list'))

@@ -14,10 +14,11 @@ class RemoveTestCase(TestCase):
     @mock.patch("action.client.list")
     @mock.patch("action.client.remove")
     def test_new_post(self, remove_mock, list_mock):
-        response = self.client.delete(reverse("action-remove", args=["name"]))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("action-remove", args=["name"]))
+        response = self.client.delete(url)
 
         self.assertRedirects(response, '/action/')
-        remove_mock.assert_called_with("name")
+        remove_mock.assert_called_with("name", "bla")
 
 
 class NewTestCase(TestCase):
@@ -42,20 +43,22 @@ class NewTestCase(TestCase):
             'method': u'GET',
         }
 
-        response = self.client.post(reverse("action-new"), data)
+        url = "{}?TSURU_TOKEN=bla".format(reverse("action-new"))
+        response = self.client.post(url, data)
 
         self.assertRedirects(response, reverse("action-list"))
-        new_mock.assert_called_with(data)
+        new_mock.assert_called_with(data, "bla")
 
 
 class ListTestCase(TestCase):
     @mock.patch("action.client.list")
     def test_list(self, list_mock):
-        response = self.client.get(reverse("action-list"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("action-list"))
+        response = self.client.get(url)
 
         self.assertTemplateUsed(response, "action/list.html")
         self.assertIn('list', response.context)
-        list_mock.assert_called_with()
+        list_mock.assert_called_with("bla")
 
 
 class GetTestCase(TestCase):
@@ -65,11 +68,12 @@ class GetTestCase(TestCase):
         result_mock.json.return_value = {"Name": "ble"}
         get_mock.return_value = result_mock
 
-        response = self.client.get(reverse("action-get", args=["name"]))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("action-get", args=["name"]))
+        response = self.client.get(url)
 
         self.assertTemplateUsed(response, "action/get.html")
         self.assertIn('item', response.context)
-        get_mock.assert_called_with("name")
+        get_mock.assert_called_with("name", "bla")
 
 
 class ClientTestCase(TestCase):
