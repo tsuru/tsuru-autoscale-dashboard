@@ -108,3 +108,14 @@ class ClientTestCase(TestCase):
         )
 
         client.remove(name="name")
+
+    def test_get(self):
+        os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
+        httpretty.register_uri(
+            httpretty.GET,
+            "http://autoscalehost.com/datasource/name",
+            "result",
+        )
+
+        result = client.get(name="name")
+        self.assertEqual(result.text, "result")

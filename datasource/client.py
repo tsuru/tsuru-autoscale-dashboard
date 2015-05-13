@@ -24,3 +24,9 @@ def remove(name):
     url = "{}/datasource/{}".format(host(), name)
     response = requests.delete(url)
     return response
+
+
+def get(name):
+    url = "{}/datasource/{}".format(host(), name)
+    response = requests.get(url)
+    return response
