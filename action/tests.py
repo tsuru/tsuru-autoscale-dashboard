@@ -58,6 +58,20 @@ class ListTestCase(TestCase):
         list_mock.assert_called_with()
 
 
+class GetTestCase(TestCase):
+    @mock.patch("action.client.get")
+    def test_get(self, get_mock):
+        result_mock = mock.Mock()
+        result_mock.json.return_value = {"Name": "ble"}
+        get_mock.return_value = result_mock
+
+        response = self.client.get(reverse("action-get", args=["name"]))
+
+        self.assertTemplateUsed(response, "action/get.html")
+        self.assertIn('item', response.context)
+        get_mock.assert_called_with("name")
+
+
 class ClientTestCase(TestCase):
     def setUp(self):
         httpretty.enable()

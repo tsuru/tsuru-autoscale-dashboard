@@ -26,6 +26,14 @@ def list(request):
     return render(request, "action/list.html", context)
 
 
+def get(request, name):
+    action = client.get(name).json()
+    context = {
+        "item": action,
+    }
+    return render(request, "action/get.html", context)
+
+
 def remove(request, name):
     client.remove(name)
     messages.success(request, u"Action {} removed.".format(name))
