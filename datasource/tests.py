@@ -89,7 +89,7 @@ class ClientTestCase(TestCase):
             "http://autoscalehost.com/datasource",
         )
 
-        client.new({})
+        client.new({}, "token")
 
     def test_list(self):
         os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
@@ -98,7 +98,7 @@ class ClientTestCase(TestCase):
             "http://autoscalehost.com/datasource",
         )
 
-        client.list()
+        client.list("token")
 
     def test_remove(self):
         os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
@@ -107,7 +107,7 @@ class ClientTestCase(TestCase):
             "http://autoscalehost.com/datasource/name",
         )
 
-        client.remove(name="name")
+        client.remove("name", "token")
 
     def test_get(self):
         os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
@@ -117,5 +117,5 @@ class ClientTestCase(TestCase):
             "result",
         )
 
-        result = client.get(name="name")
+        result = client.get("name", "token")
         self.assertEqual(result.text, "result")
