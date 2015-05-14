@@ -1,15 +1,15 @@
 from django import forms
 
 
-def datasource_list():
+def datasource_list(token):
     from datasource import client
-    dl = client.list().json() or []
+    dl = client.list(token).json() or []
     return [(ds['Name'], ds['Name']) for ds in dl]
 
 
-def action_list():
+def action_list(token):
     from action import client
-    al = client.list().json() or []
+    al = client.list(token).json() or []
     return [(ds['Name'], ds['Name']) for ds in al]
 
 
@@ -18,5 +18,5 @@ class AlarmForm(forms.Form):
     expression = forms.CharField()
     enabled = forms.BooleanField(initial=True)
     wait = forms.IntegerField()
-    datasource = forms.ChoiceField(choices=datasource_list)
-    actions = forms.MultipleChoiceField(choices=action_list)
+    datasource = forms.ChoiceField()
+    actions = forms.MultipleChoiceField()

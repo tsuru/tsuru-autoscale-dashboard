@@ -2,15 +2,18 @@ from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 
-from alarm.forms import AlarmForm
+from alarm.forms import AlarmForm, datasource_list, action_list
 from alarm import client
 
 
 def new(request):
+    token = request.GET.get("TSURU_TOKEN")
+
     form = AlarmForm(request.POST or None)
+    form.fields['datasource'].choices = datasource_list(token)
+    form.fields['actions'].choices = action_list(token)
 
     if form.is_valid():
-        token = request.GET.get("TSURU_TOKEN")
         client.new(form.cleaned_data, token)
         messages.success(request, u"Alarm saved.")
         return redirect(reverse('alarm-list'))

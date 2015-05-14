@@ -22,13 +22,17 @@ class RemoveTestCase(TestCase):
 
 
 class NewTestCase(TestCase):
-    def test_new(self):
+    @mock.patch("datasource.client")
+    @mock.patch("action.client")
+    def test_new(self, ds_client_mock, a_client_mock):
         response = self.client.get(reverse("alarm-new"))
         self.assertTemplateUsed(response, "alarm/new.html")
         self.assertIsInstance(response.context['form'], AlarmForm)
         self.assertFalse(response.context['form'].is_bound)
 
-    def test_new_invalid_post(self):
+    @mock.patch("datasource.client")
+    @mock.patch("action.client")
+    def test_new_invalid_post(self, ds_client_mock, a_client_mock):
         response = self.client.post(reverse("alarm-new"), {})
         self.assertFalse(response.context['form'].is_valid())
 
