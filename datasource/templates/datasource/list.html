@@ -4,11 +4,11 @@
 
 {% block content %}
     <p>
-    <a href="{% url 'datasource-new' %}">new</a>
+    <a href="{% url 'datasource-new' %}?TSURU_TOKEN={{ request.token }}">new</a>
     </p>
     <ul>
       {% for item in list %}
-      <li>{{ item.Name }} - {{ item.Method }} on {{ item.URL }} <a href="{% url 'datasource-remove' item.Name %}">remove</a></li>
+      <li>{{ item.Name }} - {{ item.Method }} on {{ item.URL }} <a href="{% url 'datasource-remove' item.Name %}?TSURU_TOKEN={{ request.token }}">remove</a></li>
       {% endfor %}
     </ul>
 {% endblock %}

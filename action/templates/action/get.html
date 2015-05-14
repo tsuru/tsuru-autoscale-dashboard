@@ -6,5 +6,5 @@
 <p>name: {{ item.Name }}</p>
 <p>method: {{ item.Method }}</p>
 <p>url: {{ item.URL }}</p>
-<a href="{% url 'action-remove' item.Name %}">remove</a>
+<a href="{% url 'action-remove' item.Name %}?TSURU_TOKEN={{ request.token }}">remove</a>
 {% endblock %}

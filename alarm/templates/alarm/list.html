@@ -4,11 +4,11 @@
 
 {% block content %}
     <p>
-    <a href="{% url 'alarm-new' %}">new</a>
+    <a href="{% url 'alarm-new' %}?TSURU_TOKEN={{ request.token }}">new</a>
     </p>
     <ul>
       {% for item in list %}
-      <li>{{ item.name }} - {{ item.expression }} <a href="{% url 'alarm-remove' item.name %}">remove</a></li>
+      <li>{{ item.name }} - {{ item.expression }} <a href="{% url 'alarm-remove' item.name %}?TSURU_TOKEN={{ request.token }}">remove</a></li>
       {% endfor %}
     </ul>
 {% endblock %}
