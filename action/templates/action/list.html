@@ -9,7 +9,7 @@
     <ul>
       {% for item in list %}
 
-      <li>{{ item.Name }} - {{ item.Method }} on {{ item.URL }} <a href="{% url 'action-remove' item.Name %}?TSURU_TOKEN={{ request.token }}">remove</a></li>
+      <li>{{ item.Name }} - {{ item.Method }} on {{ item.URL }} <a href="{% url 'action-get' item.Name %}?TSURU_TOKEN={{ request.token }}">view details</a></li>
       {% endfor %}
     </ul>
 {% endblock %}
