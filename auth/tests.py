@@ -18,3 +18,4 @@ class TestVerifyTokenMiddleware(TestCase):
         request_mock = RequestFactory().get("/?TSURU_TOKEN=bla")
         result = middleware.process_request(request_mock)
         self.assertFalse(result)
+        self.assertEqual(request_mock.token, "bla")
