@@ -13,7 +13,8 @@ def new(request):
         token = request.GET.get("TSURU_TOKEN")
         client.new(form.cleaned_data, token)
         messages.success(request, u"Action saved.")
-        return redirect(reverse('action-list'))
+        url = "{}?TSURU_TOKEN={}".format(reverse('action-list'), token)
+        return redirect(url)
 
     context = {"form": form}
     return render(request, "action/new.html", context)
@@ -41,4 +42,5 @@ def remove(request, name):
     token = request.GET.get("TSURU_TOKEN")
     client.remove(name, token)
     messages.success(request, u"Action {} removed.".format(name))
-    return redirect(reverse('action-list'))
+    url = "{}?TSURU_TOKEN={}".format(reverse('action-list'), token)
+    return redirect(url)

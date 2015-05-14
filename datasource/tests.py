@@ -17,19 +17,22 @@ class RemoveTestCase(TestCase):
         url = "{}?TSURU_TOKEN=bla".format(reverse("datasource-remove", args=["name"]))
         response = self.client.delete(url)
 
-        self.assertRedirects(response, reverse("datasource-list"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("datasource-list"))
+        self.assertRedirects(response, url)
         remove_mock.assert_called_with("name", "bla")
 
 
 class NewTestCase(TestCase):
     def test_new(self):
-        response = self.client.get(reverse("datasource-new"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("datasource-new"))
+        response = self.client.get(url)
         self.assertTemplateUsed(response, "datasource/new.html")
         self.assertIsInstance(response.context['form'], DataSourceForm)
         self.assertFalse(response.context['form'].is_bound)
 
     def test_new_invalid_post(self):
-        response = self.client.post(reverse("datasource-new"), {})
+        url = "{}?TSURU_TOKEN=bla".format(reverse("datasource-new"))
+        response = self.client.post(url, {})
         self.assertFalse(response.context['form'].is_valid())
 
     @mock.patch("datasource.client.list")
@@ -46,7 +49,8 @@ class NewTestCase(TestCase):
         url = "{}?TSURU_TOKEN=bla".format(reverse("datasource-new"))
         response = self.client.post(url, data)
 
-        self.assertRedirects(response, reverse("datasource-list"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("datasource-list"))
+        self.assertRedirects(response, url)
         new_mock.assert_called_with(data, "bla")
 
 

@@ -17,7 +17,8 @@ class RemoveTestCase(TestCase):
         url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-remove", args=["name"]))
         response = self.client.delete(url)
 
-        self.assertRedirects(response, reverse("alarm-list"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-list"))
+        self.assertRedirects(response, url)
         remove_mock.assert_called_with("name", "bla")
 
 
@@ -25,7 +26,8 @@ class NewTestCase(TestCase):
     @mock.patch("datasource.client")
     @mock.patch("action.client")
     def test_new(self, ds_client_mock, a_client_mock):
-        response = self.client.get(reverse("alarm-new"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-new"))
+        response = self.client.get(url)
         self.assertTemplateUsed(response, "alarm/new.html")
         self.assertIsInstance(response.context['form'], AlarmForm)
         self.assertFalse(response.context['form'].is_bound)
@@ -33,7 +35,8 @@ class NewTestCase(TestCase):
     @mock.patch("datasource.client")
     @mock.patch("action.client")
     def test_new_invalid_post(self, ds_client_mock, a_client_mock):
-        response = self.client.post(reverse("alarm-new"), {})
+        url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-new"))
+        response = self.client.post(url, {})
         self.assertFalse(response.context['form'].is_valid())
 
     @mock.patch("action.client")
@@ -60,7 +63,8 @@ class NewTestCase(TestCase):
         url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-new"))
         response = self.client.post(url, data)
 
-        self.assertRedirects(response, reverse("alarm-list"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-list"))
+        self.assertRedirects(response, url)
         new_mock.assert_called_with(data, "bla")
 
 

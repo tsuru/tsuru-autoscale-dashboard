@@ -17,19 +17,22 @@ class RemoveTestCase(TestCase):
         url = "{}?TSURU_TOKEN=bla".format(reverse("action-remove", args=["name"]))
         response = self.client.delete(url)
 
-        self.assertRedirects(response, '/action/')
+        url = "{}?TSURU_TOKEN=bla".format(reverse("action-list"))
+        self.assertRedirects(response, url)
         remove_mock.assert_called_with("name", "bla")
 
 
 class NewTestCase(TestCase):
     def test_new(self):
-        response = self.client.get(reverse("action-new"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("action-new"))
+        response = self.client.get(url)
         self.assertTemplateUsed(response, "action/new.html")
         self.assertIsInstance(response.context['form'], ActionForm)
         self.assertFalse(response.context['form'].is_bound)
 
     def test_new_invalid_post(self):
-        response = self.client.post(reverse("action-new"), {})
+        url = "{}?TSURU_TOKEN=bla".format(reverse("action-new"))
+        response = self.client.post(url, {})
         self.assertFalse(response.context['form'].is_valid())
 
     @mock.patch("action.client.list")
@@ -46,7 +49,8 @@ class NewTestCase(TestCase):
         url = "{}?TSURU_TOKEN=bla".format(reverse("action-new"))
         response = self.client.post(url, data)
 
-        self.assertRedirects(response, reverse("action-list"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("action-list"))
+        self.assertRedirects(response, url)
         new_mock.assert_called_with(data, "bla")
 
 

@@ -16,7 +16,8 @@ def new(request):
     if form.is_valid():
         client.new(form.cleaned_data, token)
         messages.success(request, u"Alarm saved.")
-        return redirect(reverse('alarm-list'))
+        url = "{}?TSURU_TOKEN={}".format(reverse("alarm-list"), token)
+        return redirect(url)
 
     context = {"form": form}
     return render(request, "alarm/new.html", context)
@@ -35,4 +36,5 @@ def remove(request, name):
     token = request.GET.get("TSURU_TOKEN")
     client.remove(name, token)
     messages.success(request, u"Alarm {} removed.".format(name))
-    return redirect(reverse('alarm-list'))
+    url = "{}?TSURU_TOKEN={}".format(reverse('alarm-list'), token)
+    return redirect(url)

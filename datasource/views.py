@@ -13,7 +13,8 @@ def new(request):
         token = request.GET.get("TSURU_TOKEN")
         client.new(form.cleaned_data, token)
         messages.success(request, u"Data source saved.")
-        return redirect(reverse('datasource-list'))
+        url = "{}?TSURU_TOKEN={}".format(reverse('datasource-list'), token)
+        return redirect(url)
 
     context = {"form": form}
     return render(request, "datasource/new.html", context)
@@ -32,4 +33,5 @@ def remove(request, name):
     token = request.GET.get("TSURU_TOKEN")
     client.remove(name, token)
     messages.success(request, u"Data source  {} remove.".format(name))
-    return redirect(reverse('datasource-list'))
+    url = "{}?TSURU_TOKEN={}".format(reverse('datasource-list'), token)
+    return redirect(url)
