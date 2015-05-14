@@ -35,3 +35,12 @@ def remove(request, name):
     messages.success(request, u"Data source  {} remove.".format(name))
     url = "{}?TSURU_TOKEN={}".format(reverse('datasource-list'), token)
     return redirect(url)
+
+
+def get(request, name):
+    token = request.GET.get("TSURU_TOKEN")
+    datasource = client.get(name, token).json()
+    context = {
+        "item": datasource,
+    }
+    return render(request, "datasource/get.html", context)

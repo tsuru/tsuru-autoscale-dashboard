@@ -65,6 +65,21 @@ class DataSourceListTest(TestCase):
         list_mock.assert_called_with("bla")
 
 
+class GetTest(TestCase):
+    @mock.patch("datasource.client.get")
+    def test_get(self, get_mock):
+        result_mock = mock.Mock()
+        result_mock.json.return_value = {"Name": "ble"}
+        get_mock.return_value = result_mock
+
+        url = "{}?TSURU_TOKEN=bla".format(reverse("datasource-get", args=["ble"]))
+        response = self.client.get(url)
+
+        self.assertTemplateUsed(response, "datasource/get.html")
+        self.assertIn('item', response.context)
+        get_mock.assert_called_with("ble", "bla")
+
+
 class DataSourceFormTestCase(TestCase):
     def test_required_fields(self):
         fields = {
