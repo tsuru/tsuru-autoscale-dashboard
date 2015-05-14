@@ -79,6 +79,21 @@ class ListTestCase(TestCase):
         list_mock.assert_called_with("bla")
 
 
+class GetTestCase(TestCase):
+    @mock.patch("alarm.client.get")
+    def test_get(self, get_mock):
+        result_mock = mock.Mock()
+        result_mock.json.return_value = {"name": "ble"}
+        get_mock.return_value = result_mock
+
+        url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-get", args=["ble"]))
+        response = self.client.get(url)
+
+        self.assertTemplateUsed(response, "alarm/get.html")
+        self.assertIn('item', response.context)
+        get_mock.assert_called_with("ble", "bla")
+
+
 class ClientTestCase(TestCase):
     def setUp(self):
         httpretty.enable()

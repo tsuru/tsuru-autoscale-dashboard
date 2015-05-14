@@ -38,3 +38,12 @@ def remove(request, name):
     messages.success(request, u"Alarm {} removed.".format(name))
     url = "{}?TSURU_TOKEN={}".format(reverse('alarm-list'), token)
     return redirect(url)
+
+
+def get(request, name):
+    token = request.GET.get("TSURU_TOKEN")
+    alarm = client.get(name, token).json()
+    context = {
+        "item": alarm,
+    }
+    return render(request, "alarm/get.html", context)

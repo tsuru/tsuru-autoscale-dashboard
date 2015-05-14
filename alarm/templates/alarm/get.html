@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Actions{% endblock %}
+
+{% block content %}
+<p>name: {{ item.name }}</p>
+<p>expression: {{ item.expression }}</p>
+<p>enabled: {{ item.enabled }}</p>
+<p>wait time: {{ item.wait }}</p>
+<a href="{% url 'alarm-remove' item.name %}?TSURU_TOKEN={{ request.token }}">remove</a>
+{% endblock %}

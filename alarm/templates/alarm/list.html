@@ -8,7 +8,7 @@
     </p>
     <ul>
       {% for item in list %}
-      <li>{{ item.name }} - {{ item.expression }} <a href="{% url 'alarm-remove' item.name %}?TSURU_TOKEN={{ request.token }}">remove</a></li>
+      <li>{{ item.name }} - {{ item.expression }} <a href="{% url 'alarm-get' item.name %}?TSURU_TOKEN={{ request.token }}">view details</a></li>
       {% endfor %}
     </ul>
 {% endblock %}
