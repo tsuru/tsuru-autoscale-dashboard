@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<ul>
+	<li><a href="{% url 'datasource-list' %}?TSURU_TOKEN={{ request.token }}">data sources</a></li>
+	<li><a href="{% url 'alarm-list' %}?TSURU_TOKEN={{ request.token }}">alarms</a></li>
+	<li><a href="{% url 'action-list' %}?TSURU_TOKEN={{ request.token }}">actions</a></li>
+</ul>
+{% endblock %}
