@@ -21,6 +21,7 @@ INSTALLED_APPS = (
     'alarm',
     'action',
     'auth',
+    'event',
 )
 
 MIDDLEWARE_CLASSES = (
