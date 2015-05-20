@@ -23,27 +23,34 @@ class RemoveTestCase(TestCase):
 
 
 class NewTestCase(TestCase):
+    @mock.patch("alarm.client.service_instance_list")
     @mock.patch("datasource.client")
     @mock.patch("action.client")
-    def test_new(self, ds_client_mock, a_client_mock):
+    def test_new(self, ds_client_mock, a_client_mock, sil):
         url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-new"))
         response = self.client.get(url)
         self.assertTemplateUsed(response, "alarm/new.html")
         self.assertIsInstance(response.context['form'], AlarmForm)
         self.assertFalse(response.context['form'].is_bound)
 
+    @mock.patch("alarm.client.service_instance_list")
     @mock.patch("datasource.client")
     @mock.patch("action.client")
-    def test_new_invalid_post(self, ds_client_mock, a_client_mock):
+    def test_new_invalid_post(self, ds_client_mock, a_client_mock, sli):
         url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-new"))
         response = self.client.post(url, {})
         self.assertFalse(response.context['form'].is_valid())
 
+    @mock.patch("alarm.client.service_instance_list")
     @mock.patch("action.client")
     @mock.patch("datasource.client")
     @mock.patch("alarm.client.list")
     @mock.patch("alarm.client.new")
-    def test_new_post(self, new_mock, list_mock, ds_client_mock, a_client_mock):
+    def test_new_post(self, new_mock, list_mock, ds_client_mock, a_client_mock, sil):
+        json_mock = mock.Mock()
+        json_mock.json.return_value = [{"Name": "bla"}]
+        sil.return_value = json_mock
+
         json_mock = mock.Mock()
         json_mock.json.return_value = [{"Name": "bla"}]
         a_client_mock.list.return_value = json_mock
@@ -58,6 +65,7 @@ class NewTestCase(TestCase):
             'wait': 10,
             'datasource': 'bla',
             'actions': ['bla'],
+            'instance': 'bla',
         }
 
         url = "{}?TSURU_TOKEN=bla".format(reverse("alarm-new"))

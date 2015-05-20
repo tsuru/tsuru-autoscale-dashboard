@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 
-from alarm.forms import AlarmForm, datasource_list, action_list
+from alarm.forms import AlarmForm, datasource_list, action_list, service_instance_list
 from alarm import client
 
 
@@ -12,6 +12,7 @@ def new(request):
     form = AlarmForm(request.POST or None)
     form.fields['datasource'].choices = datasource_list(token)
     form.fields['actions'].choices = action_list(token)
+    form.fields['instance'].choices = service_instance_list(token)
 
     if form.is_valid():
         client.new(form.cleaned_data, token)

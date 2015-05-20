@@ -34,3 +34,10 @@ def get(name, token):
     headers = {"Authorization": token}
     response = requests.get(url, headers=headers)
     return response
+
+
+def service_instance_list(token):
+    url = "{}/service/instance".format(host())
+    headers = {"Authorization": token}
+    response = requests.get(url, headers=headers)
+    return response

@@ -13,6 +13,12 @@ def action_list(token):
     return [(ds['Name'], ds['Name']) for ds in al]
 
 
+def service_instance_list(token):
+    from alarm import client
+    al = client.service_instance_list(token).json() or []
+    return [(ds['Name'], ds['Name']) for ds in al]
+
+
 class AlarmForm(forms.Form):
     name = forms.CharField()
     expression = forms.CharField()
@@ -20,3 +26,4 @@ class AlarmForm(forms.Form):
     wait = forms.IntegerField()
     datasource = forms.ChoiceField()
     actions = forms.MultipleChoiceField()
+    instance = forms.ChoiceField()
