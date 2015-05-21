@@ -3,12 +3,9 @@
 {% block title %}Alarms{% endblock %}
 
 {% block content %}
-    <p>
-    <a href="{% url 'alarm-new' %}?TSURU_TOKEN={{ request.token }}">new</a>
-    </p>
     <ul>
       {% for item in list %}
-      <li>{{ item.name }} - {{ item.expression }} <a href="{% url 'alarm-get' item.name %}?TSURU_TOKEN={{ request.token }}">view details</a></li>
+      <li>{{ item.ID }} - {{ item.StartTime }} - {{ item.EndTime }} - {{ item.Alarm.Name }} - {{ item.Successful }} - {{ item.Error }} - {{ item.Action.Name }}</li>
       {% endfor %}
     </ul>
 {% endblock %}
