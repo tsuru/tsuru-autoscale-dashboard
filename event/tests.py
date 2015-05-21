@@ -1,10 +1,23 @@
 from django.test import TestCase
+from django.core.urlresolvers import reverse
 
 from event import client
 
 import httpretty
+import mock
 
 import os
+
+
+class ListTestCase(TestCase):
+    @mock.patch("event.client.list")
+    def test_list(self, list_mock):
+        url = "{}?TSURU_TOKEN=bla".format(reverse("event-list", args=["alarm_name"]))
+        response = self.client.get(url)
+
+        self.assertTemplateUsed(response, "event/list.html")
+        self.assertIn('list', response.context)
+        list_mock.assert_called_with("alarm_name", "bla")
 
 
 class ClientTestCase(TestCase):
