@@ -1,10 +1,23 @@
 from django.test import TestCase
+from django.core.urlresolvers import reverse
 
 from instance import client
 
 import httpretty
+import mock
 
 import os
+
+
+class ListTestCase(TestCase):
+    @mock.patch("instance.client.list")
+    def test_list(self, list_mock):
+        url = "{}?TSURU_TOKEN=bla".format(reverse("instance-list"))
+        response = self.client.get(url)
+
+        self.assertTemplateUsed(response, "instance/list.html")
+        self.assertIn('list', response.context)
+        list_mock.assert_called_with("bla")
 
 
 class ClientTestCase(TestCase):

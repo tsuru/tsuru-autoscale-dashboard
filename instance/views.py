@@ -1,3 +1,12 @@
 from django.shortcuts import render
 
-# Create your views here.
+from instance import client
+
+
+def list(request):
+    token = request.GET.get("TSURU_TOKEN")
+    instances = client.list(token).json()
+    context = {
+        "list": instances,
+    }
+    return render(request, "instance/list.html", context)

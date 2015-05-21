@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <ul>
+      {% for item in list %}
+      <li>{{ item.Name }} <a href="">view details</a></li>
+      {% endfor %}
+    </ul>
+{% endblock %}
