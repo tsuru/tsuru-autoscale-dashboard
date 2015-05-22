@@ -12,3 +12,10 @@ def list(token):
     headers = {"Authorization": token}
     response = requests.get(url, headers=headers)
     return response
+
+
+def get(name, token):
+    url = "{}/service/instance/{}".format(host(), name)
+    headers = {"Authorization": token}
+    response = requests.get(url, headers=headers)
+    return response
