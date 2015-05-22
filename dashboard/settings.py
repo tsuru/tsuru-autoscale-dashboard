@@ -22,6 +22,7 @@ INSTALLED_APPS = (
     'auth',
     'event',
     'instance',
+    'wizard',
 )
 
 MIDDLEWARE_CLASSES = (
