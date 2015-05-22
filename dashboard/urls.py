@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^alarm/', include('alarm.urls')),
     url(r'^action/', include('action.urls')),
     url(r'^instance/', include('instance.urls')),
+    url(r'^wizard/', include('wizard.urls')),
 ]

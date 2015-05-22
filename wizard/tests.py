@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.core.urlresolvers import reverse
 
 from wizard import forms
 
@@ -29,3 +30,11 @@ class ConfigFormTest(TestCase):
 
         for field, required in fields.items():
             self.assertEqual(form.fields[field].required, required)
+
+
+class IndexTestCase(TestCase):
+    def test_index(self):
+        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-index"))
+        response = self.client.get(url)
+
+        self.assertTemplateUsed(response, "wizard/index.html")
