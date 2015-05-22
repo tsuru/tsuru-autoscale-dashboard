@@ -19,3 +19,10 @@ def get(name, token):
     headers = {"Authorization": token}
     response = requests.get(url, headers=headers)
     return response
+
+
+def alarms_by_instance(instance, token):
+    url = "{}/alarm/instance/{}".format(host(), instance)
+    headers = {"Authorization": token}
+    response = requests.get(url, headers=headers)
+    return response

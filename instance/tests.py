@@ -56,3 +56,12 @@ class ClientTestCase(TestCase):
         )
 
         client.get("name", "token")
+
+    def test_alarms_by_instance(self):
+        os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
+        httpretty.register_uri(
+            httpretty.GET,
+            "http://autoscalehost.com/alarm/instance/name",
+        )
+
+        client.alarms_by_instance("name", "token")
