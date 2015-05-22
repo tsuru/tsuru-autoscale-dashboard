@@ -10,3 +10,12 @@ def list(request):
         "list": instances,
     }
     return render(request, "instance/list.html", context)
+
+
+def get(request, name):
+    token = request.GET.get("TSURU_TOKEN")
+    instance = client.get(name, token).json()
+    context = {
+        "item": instance,
+    }
+    return render(request, "instance/get.html", context)

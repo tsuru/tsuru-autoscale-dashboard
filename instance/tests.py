@@ -20,6 +20,17 @@ class ListTestCase(TestCase):
         list_mock.assert_called_with("bla")
 
 
+class GetTestCase(TestCase):
+    @mock.patch("instance.client.get")
+    def test_get(self, list_mock):
+        url = "{}?TSURU_TOKEN=bla".format(reverse("instance-get", args=["instance"]))
+        response = self.client.get(url)
+
+        self.assertTemplateUsed(response, "instance/get.html")
+        self.assertIn('item', response.context)
+        list_mock.assert_called_with("instance", "bla")
+
+
 class ClientTestCase(TestCase):
     def setUp(self):
         httpretty.enable()

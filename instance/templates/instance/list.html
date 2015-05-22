@@ -3,7 +3,7 @@
 {% block content %}
     <ul>
       {% for item in list %}
-      <li>{{ item.Name }} <a href="">view details</a></li>
+      <li>{{ item.Name }} <a href="{% url 'instance-get' item.Name %}">view details</a></li>
       {% endfor %}
     </ul>
 {% endblock %}
