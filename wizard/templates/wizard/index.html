@@ -1,7 +1,23 @@
 {% extends 'base.html' %}
 
-{% block title %}New Alarm{% endblock %}
+{% load bootstrap3 %}
+
+{% block title %}Creating auto scale{% endblock %}
 
 {% block content %}
-    {% include 'form.html' %}
+<form method="POST" action="?TSURU_TOKEN={{ request.token }}" class="form-horizontal">
+    {% csrf_token %}
+    <fieldset>
+        {% bootstrap_form config_form layout="horizontal" %}
+    </fieldset>
+    <fieldset>
+        <legend>Scale up</legend>
+        {% bootstrap_form scale_up_form layout="horizontal" %}
+    </fieldset>
+    <fieldset class="elist">
+        <legend>Scale down</legend>
+        {% bootstrap_form scale_down_form layout="horizontal" %}
+    </fieldset>
+    {% buttons submit='OK' reset="Cancel" %}{% endbuttons %}
+</form>
 {% endblock %}
