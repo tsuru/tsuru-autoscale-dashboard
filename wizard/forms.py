@@ -7,3 +7,7 @@ class ScaleForm(forms.Form):
     value = forms.CharField()
     units = forms.CharField()
     wait = forms.IntegerField()
+
+
+class ConfigForm(forms.Form):
+    min = forms.IntegerField()

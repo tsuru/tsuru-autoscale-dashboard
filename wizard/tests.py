@@ -17,3 +17,15 @@ class ScaleFormTest(TestCase):
 
         for field, required in fields.items():
             self.assertEqual(form.fields[field].required, required)
+
+
+class ConfigFormTest(TestCase):
+    def test_required_fields(self):
+        fields = {
+            "min": True,
+        }
+
+        form = forms.ConfigForm()
+
+        for field, required in fields.items():
+            self.assertEqual(form.fields[field].required, required)
