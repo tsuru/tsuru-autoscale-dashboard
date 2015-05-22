@@ -1,7 +1,7 @@
 from django import forms
 
 
-class ScaleUpForm(forms.Form):
+class ScaleForm(forms.Form):
     metric = forms.ChoiceField()
     operator = forms.ChoiceField()
     value = forms.CharField()
