@@ -71,3 +71,22 @@ class SaveScaleUpTest(TestCase):
         views.save_scale_up(form, token)
 
         alarm_mock.assert_called_with(form.cleaned_data, token)
+
+
+class SaveScaleDownTest(TestCase):
+    @mock.patch("alarm.client.new")
+    def test_save_scale_down(self, alarm_mock):
+        data = {
+            "operator": ">",
+            "units": 1,
+            "metric": "cpu",
+            "value": 10,
+            "wait": 50,
+        }
+        form = forms.ScaleForm(data)
+        form.is_valid()
+        token = "token"
+
+        views.save_scale_down(form, token)
+
+        alarm_mock.assert_called_with(form.cleaned_data, token)

@@ -12,7 +12,7 @@ def save_scale_up(form, token):
 
 
 def save_scale_down(form, token):
-    pass
+    alarm_client.new(form.cleaned_data, token)
 
 
 def index(request):
