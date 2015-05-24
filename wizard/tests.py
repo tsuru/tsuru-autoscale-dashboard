@@ -36,5 +36,16 @@ class IndexTestCase(TestCase):
     def test_index(self):
         url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-index"))
         response = self.client.get(url)
-
         self.assertTemplateUsed(response, "wizard/index.html")
+
+    def test_forms_prefix(self):
+        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-index"))
+        response = self.client.get(url)
+
+        forms = {
+            "scale_up_form": "scale_up",
+            "scale_down_form": "scale_down",
+        }
+
+        for f, prefix in forms.items():
+            self.assertEqual(response.context[f].prefix, prefix)
