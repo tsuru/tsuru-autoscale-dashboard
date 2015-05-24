@@ -8,11 +8,31 @@ from alarm import client as alarm_client
 
 
 def save_scale_up(form, token):
-    alarm_client.new(form.cleaned_data, token)
+    form_data = form.cleaned_data
+    data = {
+        "name": "scale_up_",
+        "expression": "cpu %s %s" % (form_data["operator"], form_data["value"]),
+        "enabled": True,
+        "wait": form.cleaned_data["wait"],
+        "datasource": form.cleaned_data["metric"],
+        "actions": ["scale_up"],
+        "instance": "",
+    }
+    alarm_client.new(data, token)
 
 
 def save_scale_down(form, token):
-    alarm_client.new(form.cleaned_data, token)
+    form_data = form.cleaned_data
+    data = {
+        "name": "scale_down_",
+        "expression": "cpu %s %s" % (form_data["operator"], form_data["value"]),
+        "enabled": True,
+        "wait": form.cleaned_data["wait"],
+        "datasource": form.cleaned_data["metric"],
+        "actions": ["scale_down"],
+        "instance": "",
+    }
+    alarm_client.new(data, token)
 
 
 def index(request):

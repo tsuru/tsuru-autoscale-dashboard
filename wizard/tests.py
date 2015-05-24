@@ -70,7 +70,16 @@ class SaveScaleUpTest(TestCase):
 
         views.save_scale_up(form, token)
 
-        alarm_mock.assert_called_with(form.cleaned_data, token)
+        expected_data = {
+            "name": "scale_up_",
+            "expression": "cpu > 10",
+            "enabled": True,
+            "wait": 50,
+            "datasource": "cpu",
+            "actions": ["scale_up"],
+            "instance": "",
+        }
+        alarm_mock.assert_called_with(expected_data, token)
 
 
 class SaveScaleDownTest(TestCase):
@@ -89,4 +98,13 @@ class SaveScaleDownTest(TestCase):
 
         views.save_scale_down(form, token)
 
-        alarm_mock.assert_called_with(form.cleaned_data, token)
+        expected_data = {
+            "name": "scale_down_",
+            "expression": "cpu > 10",
+            "enabled": True,
+            "wait": 50,
+            "datasource": "cpu",
+            "actions": ["scale_down"],
+            "instance": "",
+        }
+        alarm_mock.assert_called_with(expected_data, token)
