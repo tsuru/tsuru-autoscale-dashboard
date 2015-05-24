@@ -67,17 +67,18 @@ class SaveScaleUpTest(TestCase):
         form = forms.ScaleForm(data)
         form.is_valid()
         token = "token"
+        instance = "instance"
 
-        views.save_scale_up(form, token)
+        views.save_scale_up(form, instance, token)
 
         expected_data = {
-            "name": "scale_up_",
+            "name": "scale_up_instance",
             "expression": "cpu > 10",
             "enabled": True,
             "wait": 50,
             "datasource": "cpu",
             "actions": ["scale_up"],
-            "instance": "",
+            "instance": instance,
         }
         alarm_mock.assert_called_with(expected_data, token)
 
@@ -95,16 +96,17 @@ class SaveScaleDownTest(TestCase):
         form = forms.ScaleForm(data)
         form.is_valid()
         token = "token"
+        instance = "instance"
 
-        views.save_scale_down(form, token)
+        views.save_scale_down(form, instance, token)
 
         expected_data = {
-            "name": "scale_down_",
+            "name": "scale_down_instance",
             "expression": "cpu > 10",
             "enabled": True,
             "wait": 50,
             "datasource": "cpu",
             "actions": ["scale_down"],
-            "instance": "",
+            "instance": instance,
         }
         alarm_mock.assert_called_with(expected_data, token)
