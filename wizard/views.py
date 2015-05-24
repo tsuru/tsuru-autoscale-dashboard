@@ -17,6 +17,7 @@ def save_scale_up(form, instance, token):
         "datasource": form.cleaned_data["metric"],
         "actions": ["scale_up"],
         "instance": instance,
+        "envs": {"step": form.cleaned_data["units"]},
     }
     alarm_client.new(data, token)
 
@@ -31,6 +32,7 @@ def save_scale_down(form, instance, token):
         "datasource": form.cleaned_data["metric"],
         "actions": ["scale_down"],
         "instance": instance,
+        "envs": {"step": form.cleaned_data["units"]},
     }
     alarm_client.new(data, token)
 

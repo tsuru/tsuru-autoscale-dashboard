@@ -79,6 +79,7 @@ class SaveScaleUpTest(TestCase):
             "datasource": "cpu",
             "actions": ["scale_up"],
             "instance": instance,
+            "envs": {"step": "1"},
         }
         alarm_mock.assert_called_with(expected_data, token)
 
@@ -108,5 +109,6 @@ class SaveScaleDownTest(TestCase):
             "datasource": "cpu",
             "actions": ["scale_down"],
             "instance": instance,
+            "envs": {"step": "1"},
         }
         alarm_mock.assert_called_with(expected_data, token)
