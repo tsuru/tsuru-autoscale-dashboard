@@ -24,6 +24,9 @@ class GetTestCase(TestCase):
     @mock.patch("instance.client.alarms_by_instance")
     @mock.patch("instance.client.get")
     def test_get(self, list_mock, alarms_by_instance_mock):
+        json_mock = mock.Mock()
+        json_mock.json.return_value = {"Name": "instance"}
+        list_mock.return_value = json_mock
         url = "{}?TSURU_TOKEN=bla".format(reverse("instance-get", args=["instance"]))
         response = self.client.get(url)
 

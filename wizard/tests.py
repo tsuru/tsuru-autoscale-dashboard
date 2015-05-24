@@ -37,12 +37,12 @@ class ConfigFormTest(TestCase):
 
 class IndexTestCase(TestCase):
     def test_index(self):
-        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-index"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["instance"]))
         response = self.client.get(url)
         self.assertTemplateUsed(response, "wizard/index.html")
 
     def test_forms_prefix(self):
-        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-index"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["instance"]))
         response = self.client.get(url)
 
         forms = {

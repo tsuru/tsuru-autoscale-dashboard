@@ -4,7 +4,7 @@
 <p>name: {{ item.Name }}</p>
 <p>apps: {{ item.Apps }}</p>
 <p>
-    <a href="{% url 'wizard-index' %}?TSURU_TOKEN={{ request.token }}">
+    <a href="{% url 'wizard-new' item.Name %}?TSURU_TOKEN={{ request.token }}">
         add new scale
     </a>
 </p>
