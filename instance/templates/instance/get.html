@@ -8,9 +8,12 @@
         add new scale
     </a>
 </p>
+{% if alarms %}
+<h2>Alarms</h2>
 <ul>
 {% for alarm in alarms %}
-<li>{{ alarm.Name }}</li>
+<li>{{ alarm.name }} - {{ alarm.expression }}</li>
 {% endfor %}
 </ul>
+{% endif %}
 {% endblock %}
