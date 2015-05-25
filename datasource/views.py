@@ -11,8 +11,11 @@ def new(request):
 
     if form.is_valid():
         token = request.GET.get("TSURU_TOKEN")
-        client.new(form.cleaned_data, token)
-        messages.success(request, u"Data source saved.")
+        response = client.new(form.cleaned_data, token)
+        if response.status_code > 399:
+            messages.error(request, response.text)
+        else:
+            messages.success(request, u"Data source saved.")
         url = "{}?TSURU_TOKEN={}".format(reverse('datasource-list'), token)
         return redirect(url)
 
