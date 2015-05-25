@@ -32,6 +32,7 @@ MIDDLEWARE_CLASSES = (
     'auth.middleware.AuthMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'dashboard.middleware.LogMiddleware',
 )
 
 ROOT_URLCONF = 'dashboard.urls'
