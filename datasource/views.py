@@ -5,8 +5,6 @@ from django.contrib import messages
 from datasource.forms import DataSourceForm
 from datasource import client
 
-import logging
-
 
 def new(request):
     form = DataSourceForm(request.POST or None)
@@ -17,10 +15,7 @@ def new(request):
         if response.status_code > 399:
             messages.error(request, response.text)
         else:
-            messages.success(request, u"Data source saved. - {}".format(response))
-        logging.info("info - add datasource {}".format(response.text))
-        logging.error("error - add datasource {}".format(response.text))
-        logging.debug("debug- add datasource {}".format(response.text))
+            messages.success(request, u"Data source saved.")
         url = "{}?TSURU_TOKEN={}".format(reverse('datasource-list'), token)
         return redirect(url)
 

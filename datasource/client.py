@@ -1,5 +1,6 @@
 import os
 import json
+import logging
 
 import requests
 
@@ -11,7 +12,10 @@ def host():
 def new(data, token):
     url = "{}/datasource".format(host())
     headers = {"Authorization": token}
-    response = requests.post(url, data=json.dumps(data), headers=headers)
+    d = json.dumps(data)
+    logging.error("trying to add new datasource - {} - {}".format(url, d))
+    response = requests.post(url, data=d, headers=headers)
+    logging.error("add new datasource response - {}".format(response))
     return response
 
 
