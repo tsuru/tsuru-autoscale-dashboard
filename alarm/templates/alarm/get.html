@@ -7,5 +7,9 @@
 <p>expression: {{ item.expression }}</p>
 <p>enabled: {{ item.enabled }}</p>
 <p>wait time: {{ item.wait }}</p>
+<p>actions: {{ item.actions }}</p>
+<p>data source: {{ item.datasource }}</p>
+<p>instance: {{ item.instance }}</p>
+<p>envs: {{ item.envs }}</p>
 <a href="{% url 'alarm-remove' item.name %}?TSURU_TOKEN={{ request.token }}">remove</a>
 {% endblock %}
