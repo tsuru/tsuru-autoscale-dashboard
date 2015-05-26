@@ -7,11 +7,16 @@ from wizard import forms
 from alarm import client as alarm_client
 
 
+metrics = {
+    "cpu": "data.aggregations.range.buckets[0].date.buckets[0].max.value",
+}
+
+
 def save_scale_up(form, instance, token):
     form_data = form.cleaned_data
     data = {
         "name": "scale_up_{}".format(instance),
-        "expression": "cpu %s %s" % (form_data["operator"], form_data["value"]),
+        "expression": "%s %s %s" % (metrics["cpu"], form_data["operator"], form_data["value"]),
         "enabled": True,
         "wait": form.cleaned_data["wait"],
         "datasource": form.cleaned_data["metric"],
@@ -26,7 +31,7 @@ def save_scale_down(form, instance, token):
     form_data = form.cleaned_data
     data = {
         "name": "scale_down_{}".format(instance),
-        "expression": "cpu %s %s" % (form_data["operator"], form_data["value"]),
+        "expression": "%s %s %s" % (metrics["cpu"], form_data["operator"], form_data["value"]),
         "enabled": True,
         "wait": form.cleaned_data["wait"],
         "datasource": form.cleaned_data["metric"],

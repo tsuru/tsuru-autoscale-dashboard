@@ -73,7 +73,7 @@ class SaveScaleUpTest(TestCase):
 
         expected_data = {
             "name": "scale_up_instance",
-            "expression": "cpu > 10",
+            "expression": "data.aggregations.range.buckets[0].date.buckets[0].max.value > 10",
             "enabled": True,
             "wait": 50,
             "datasource": "cpu",
@@ -103,7 +103,7 @@ class SaveScaleDownTest(TestCase):
 
         expected_data = {
             "name": "scale_down_instance",
-            "expression": "cpu > 10",
+            "expression": "data.aggregations.range.buckets[0].date.buckets[0].max.value > 10",
             "enabled": True,
             "wait": 50,
             "datasource": "cpu",
