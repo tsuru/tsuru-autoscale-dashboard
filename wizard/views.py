@@ -32,7 +32,7 @@ def disable_alarm(form, instance, token):
     form_data = form.cleaned_data
     data = {
         "name": "disable_scale_down_{}".format(instance),
-        "expression": "%s < %s" % (metrics["units"], form_data["min"]),
+        "expression": "%s <= %s" % (metrics["units"], form_data["min"]),
         "enabled": True,
         "wait": 30,
         "datasource": "units",
