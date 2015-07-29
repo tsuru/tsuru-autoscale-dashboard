@@ -11,9 +11,9 @@ def host():
 def list(token):
     url = "{}/service/instance".format(host())
     headers = {"Authorization": token}
-    logging.error("trying to get service instances - {}".format(url))
+    logging.debug("trying to get service instances - {}".format(url))
     response = requests.get(url, headers=headers)
-    logging.error("service instances response - {}".format(response))
+    logging.debug("service instances response - {}".format(response))
     return response
 
 
