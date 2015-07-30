@@ -3,7 +3,11 @@
 {% block content %}
     <ul>
       {% for item in list %}
-      <li>{{ item.Name }} <a href="{% url 'instance-get' item.Name %}?TSURU_TOKEN={{ request.token }}">view details</a></li>
+      <li class="list-group-item">
+        <a href="{% url 'instance-get' item.Name %}?TSURU_TOKEN={{ request.token }}">
+            {{ item.Name }}
+        </a>
+      </li>
       {% endfor %}
     </ul>
 {% endblock %}
