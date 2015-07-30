@@ -1,18 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>name: {{ item.Name }}</p>
-<p>apps: {{ item.Apps }}</p>
+<div class="row-fluid">
+    <div class="span12">
+        <h3>Info</h3>
+        <div class="content">
+            <p><strong>ID:</strong> {{ item.Name }}</p>
+            <p><strong>Application:</strong> {{ item.Apps.0 }}</p>
+        </div>
+    </div>
+</div>
+{% if not alarms %}
 <p>
     <a href="{% url 'wizard-new' item.Name %}?TSURU_TOKEN={{ request.token }}">
         add new scale
     </a>
 </p>
+{% endif %}
 {% if alarms %}
 <h2>Alarms</h2>
-<ul>
+<ul class="list-group">
 {% for alarm in alarms %}
-<li>{{ alarm.name }} - {{ alarm.expression }}</li>
+<li class="list-group-item">{{ alarm.name }} - {{ alarm.expression }}</li>
 {% endfor %}
 </ul>
 {% endif %}

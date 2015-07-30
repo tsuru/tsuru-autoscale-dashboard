@@ -1,3 +1,7 @@
 .container {
 	margin: 0 !important;
 }
+
+.list-group {
+    padding: 0;
+}
