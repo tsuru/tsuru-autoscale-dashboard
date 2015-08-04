@@ -23,6 +23,26 @@ class ListTestCase(TestCase):
 class GetTestCase(TestCase):
     @mock.patch("instance.client.alarms_by_instance")
     @mock.patch("instance.client.get")
+    def test_get_without_alamrs(self, list_mock, alarms_by_instance_mock):
+        json_mock = mock.Mock()
+        json_mock.json.return_value = {"Name": "instance"}
+        list_mock.return_value = json_mock
+
+        aresponse = mock.Mock()
+        aresponse.json.return_value = None
+        alarms_by_instance_mock.return_value = aresponse
+
+        url = "{}?TSURU_TOKEN=bla".format(reverse("instance-get", args=["instance"]))
+        response = self.client.get(url)
+
+        self.assertTemplateUsed(response, "instance/get.html")
+        self.assertIn('item', response.context)
+        self.assertIn('alarms', response.context)
+        self.assertIn('events', response.context)
+        list_mock.assert_called_with("instance", "bla")
+
+    @mock.patch("instance.client.alarms_by_instance")
+    @mock.patch("instance.client.get")
     def test_get(self, list_mock, alarms_by_instance_mock):
         json_mock = mock.Mock()
         json_mock.json.return_value = {"Name": "instance"}

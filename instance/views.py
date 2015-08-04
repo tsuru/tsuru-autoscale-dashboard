@@ -16,7 +16,7 @@ def list(request):
 def get(request, name):
     token = request.GET.get("TSURU_TOKEN")
     instance = client.get(name, token).json()
-    alarms = client.alarms_by_instance(name, token).json()
+    alarms = client.alarms_by_instance(name, token).json() or []
 
     events = []
 
