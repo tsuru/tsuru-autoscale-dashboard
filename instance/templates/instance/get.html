@@ -25,4 +25,13 @@
 {% endfor %}
 </ul>
 {% endif %}
+
+{% if events %}
+<h2>Events</h2>
+<ul class="list-group">
+{% for event in events %}
+<li class="list-group-item">{{ event.Alarm.name }} - {{ event.Successful }} - {{ event.StartTime }} - {{ event.EndTime }}</li>
+{% endfor %}
+</ul>
+{% endif %}
 {% endblock %}

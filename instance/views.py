@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from instance import client
+from event import client as eclient
 
 
 def list(request):
@@ -16,8 +17,15 @@ def get(request, name):
     token = request.GET.get("TSURU_TOKEN")
     instance = client.get(name, token).json()
     alarms = client.alarms_by_instance(name, token).json()
+
+    events = []
+
+    for alarm in alarms:
+        events.extend(eclient.list(alarm["name"], token).json())
+
     context = {
         "item": instance,
         "alarms": alarms,
+        "events": events,
     }
     return render(request, "instance/get.html", context)

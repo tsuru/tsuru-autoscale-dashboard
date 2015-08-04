@@ -32,6 +32,8 @@ class GetTestCase(TestCase):
 
         self.assertTemplateUsed(response, "instance/get.html")
         self.assertIn('item', response.context)
+        self.assertIn('alarms', response.context)
+        self.assertIn('events', response.context)
         list_mock.assert_called_with("instance", "bla")
 
 
