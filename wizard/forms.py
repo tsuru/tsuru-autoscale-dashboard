@@ -22,7 +22,7 @@ class ScaleForm(forms.Form):
     metric = forms.ChoiceField(METRIC_CHOICES)
     operator = forms.ChoiceField(OPERATOR_CHOICES)
     value = forms.CharField()
-    units = forms.CharField(label=u'Step (in units)')
+    step = forms.CharField(label=u'Step (in units)')
     wait = forms.IntegerField(label=u'Wait time (in seconds)')
 
 

@@ -2,10 +2,8 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 
 from wizard import forms
-from wizard import views
 from wizard import client
 
-import mock
 import httpretty
 import os
 
@@ -16,7 +14,7 @@ class ScaleFormTest(TestCase):
             "metric": True,
             "operator": True,
             "value": True,
-            "units": True,
+            "step": True,
             "wait": True,
         }
 
@@ -55,66 +53,6 @@ class IndexTestCase(TestCase):
 
         for f, prefix in forms.items():
             self.assertEqual(response.context[f].prefix, prefix)
-
-
-class SaveScaleUpTest(TestCase):
-    @mock.patch("alarm.client.new")
-    def test_save_scale_up(self, alarm_mock):
-        data = {
-            "operator": ">",
-            "units": 1,
-            "metric": "cpu",
-            "value": 10,
-            "wait": 50,
-        }
-        form = forms.ScaleForm(data)
-        form.is_valid()
-        token = "token"
-        instance = "instance"
-
-        views.save_scale_up(form, instance, token)
-
-        expected_data = {
-            "name": "scale_up_instance",
-            "expression": "data.aggregations.range.buckets[0].date.buckets[0].max.value > 10",
-            "enabled": True,
-            "wait": 50 * 1000 * 1000 * 1000,
-            "datasource": "cpu",
-            "actions": ["scale_up"],
-            "instance": instance,
-            "envs": {"step": "1"},
-        }
-        alarm_mock.assert_called_with(expected_data, token)
-
-
-class SaveScaleDownTest(TestCase):
-    @mock.patch("alarm.client.new")
-    def test_save_scale_down(self, alarm_mock):
-        data = {
-            "operator": ">",
-            "units": 1,
-            "metric": "cpu",
-            "value": 10,
-            "wait": 50,
-        }
-        form = forms.ScaleForm(data)
-        form.is_valid()
-        token = "token"
-        instance = "instance"
-
-        views.save_scale_down(form, instance, token)
-
-        expected_data = {
-            "name": "scale_down_instance",
-            "expression": "data.aggregations.range.buckets[0].date.buckets[0].max.value > 10",
-            "enabled": True,
-            "wait": 50 * 1000 * 1000 * 1000,
-            "datasource": "cpu",
-            "actions": ["scale_down"],
-            "instance": instance,
-            "envs": {"step": "1"},
-        }
-        alarm_mock.assert_called_with(expected_data, token)
 
 
 class ClientTestCase(TestCase):
