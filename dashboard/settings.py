@@ -16,6 +16,7 @@ INSTALLED_APPS = (
 
     'bootstrap3',
 
+    'app',
     'datasource',
     'alarm',
     'action',
