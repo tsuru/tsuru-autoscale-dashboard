@@ -3,8 +3,11 @@ from django.core.urlresolvers import reverse
 
 from wizard import forms
 from wizard import views
+from wizard import client
 
 import mock
+import httpretty
+import os
 
 
 class ScaleFormTest(TestCase):
@@ -112,3 +115,21 @@ class SaveScaleDownTest(TestCase):
             "envs": {"step": "1"},
         }
         alarm_mock.assert_called_with(expected_data, token)
+
+
+class ClientTestCase(TestCase):
+    def setUp(self):
+        httpretty.enable()
+
+    def tearDown(self):
+        httpretty.disable()
+        httpretty.reset()
+
+    def test_new(self):
+        os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
+        httpretty.register_uri(
+            httpretty.POST,
+            "http://autoscalehost.com/wizard",
+        )
+
+        client.new({}, "token")
