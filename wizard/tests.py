@@ -71,3 +71,12 @@ class ClientTestCase(TestCase):
         )
 
         client.new({}, "token")
+
+    def test_get(self):
+        os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
+        httpretty.register_uri(
+            httpretty.GET,
+            "http://autoscalehost.com/wizard/name",
+        )
+
+        client.get("name", "token")

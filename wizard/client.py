@@ -13,3 +13,10 @@ def new(data, token):
     headers = {"Authorization": token}
     response = requests.post(url, data=json.dumps(data), headers=headers)
     return response
+
+
+def get(name, token):
+    url = "{}/wizard/{}".format(host(), name)
+    headers = {"Authorization": token}
+    response = requests.get(url, headers=headers)
+    return response
