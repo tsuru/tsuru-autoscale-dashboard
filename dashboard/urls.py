@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^action/', include('action.urls')),
     url(r'^instance/', include('instance.urls')),
     url(r'^wizard/', include('wizard.urls')),
+    url(r'^app/', include('app.urls')),
 ]
