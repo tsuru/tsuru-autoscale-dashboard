@@ -6,7 +6,7 @@ from wizard import forms
 from wizard import client
 
 
-def new(request, instance):
+def new(request, instance=None):
     token = request.GET.get("TSURU_TOKEN")
 
     scale_up_form = forms.ScaleForm(request.POST or None, prefix="scale_up")
