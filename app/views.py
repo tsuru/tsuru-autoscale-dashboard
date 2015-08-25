@@ -15,9 +15,9 @@ def index(request, app):
         if app in inst.get('Apps', []):
             instance = inst
 
-        response = wclient.get(instance["Name"], token)
-        if response.status_code == 200:
-            auto_scale = response.json()
+            response = wclient.get(instance["Name"], token)
+            if response.status_code == 200:
+                auto_scale = response.json()
 
     context = {
         "instance": instance,
