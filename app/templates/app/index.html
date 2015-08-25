@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% if instance %}
     <ul class="list-group">
       <li class="list-group-item">
         {{ instance.Name }}
       </li>
     </ul>
+    {% else %}
+        <a href="" class="btn btn-default">add auto scale</a>
+    {% endif %}
 {% endblock %}
