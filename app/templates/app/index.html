@@ -2,11 +2,16 @@
 
 {% block content %}
     {% if instance %}
-    <ul class="list-group">
-      <li class="list-group-item">
-        {{ instance.Name }}
-      </li>
-    </ul>
+    <p><strong>Start with units:</strong> {{ auto_scale.minUnits }}</p>
+
+    <h3>Scale up </h3>
+    <p><strong>Expression:</strong> {{ auto_scale.scaleUp.metric }} {{ auto_scale.scaleUp.operator }} {{ auto_scale.scaleUp.value }}</p>
+    <p><strong>Step (in units):</strong> {{ auto_scale.scaleUp.step }} </p>
+    <p><strong>Wait time (in seconds):</strong> {{ auto_scale.scaleUp.wait }}</p>
+    <h3>Scale down </h3>
+    <p><strong>Expression:</strong> {{ auto_scale.scaleDown.metric }} {{ auto_scale.scaleDown.operator }} {{ auto_scale.scaleDown.value }}</p>
+    <p><strong>Step (in units):</strong> {{ auto_scale.scaleDown.step }} </p>
+    <p><strong>Wait time (in seconds):</strong> {{ auto_scale.scaleDown.wait }}</p>
     {% else %}
         <a href="{% url 'wizard-new' app %}?TSURU_TOKEN={{ token }}" class="btn btn-default">add auto scale</a>
     {% endif %}
