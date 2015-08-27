@@ -8,6 +8,6 @@
       </li>
     </ul>
     {% else %}
-        <a href="{% url 'wizard-new' %}?TSURU_TOKEN={{ request.token }}" class="btn btn-default">add auto scale</a>
+        <a href="{% url 'wizard-new' app %}?TSURU_TOKEN={{ token }}" class="btn btn-default">add auto scale</a>
     {% endif %}
 {% endblock %}
