@@ -47,8 +47,8 @@ def get_or_create_tsuru_instance(instance_name, token):
 def new(request, instance=None):
     token = request.GET.get("TSURU_TOKEN")
 
-    scale_up_form = forms.ScaleForm(request.POST or None, prefix="scale_up")
-    scale_down_form = forms.ScaleForm(request.POST or None, prefix="scale_down")
+    scale_up_form = forms.ScaleForm(request.POST or None, prefix="scale_up", initial={"operator": ">"})
+    scale_down_form = forms.ScaleForm(request.POST or None, prefix="scale_down", initial={"operator": "<"})
     config_form = forms.ConfigForm(request.POST or None)
 
     if scale_up_form.is_valid() and scale_down_form.is_valid() and config_form.is_valid():
