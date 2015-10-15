@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from wizard import forms
 from wizard import client
 
+import mock
 import httpretty
 import os
 
@@ -37,12 +38,14 @@ class ConfigFormTest(TestCase):
 
 
 class IndexTestCase(TestCase):
-    def test_index(self):
+    @mock.patch("wizard.views.process_list")
+    def test_index(self, process_mock):
         url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["instance"]))
         response = self.client.get(url)
         self.assertTemplateUsed(response, "wizard/index.html")
 
-    def test_forms_prefix(self):
+    @mock.patch("wizard.views.process_list")
+    def test_forms_prefix(self, process_mock):
         url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["instance"]))
         response = self.client.get(url)
 
@@ -53,6 +56,17 @@ class IndexTestCase(TestCase):
 
         for f, prefix in forms.items():
             self.assertEqual(response.context[f].prefix, prefix)
+
+    @mock.patch("wizard.views.process_list")
+    def test_config_process_list(self, process_mock):
+        process = [("web", "web")]
+        process_mock.return_value = process
+
+        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["instance"]))
+        response = self.client.get(url)
+
+        choices = response.context["config_form"].fields["process"].choices
+        self.assertListEqual(process, choices)
 
 
 class ClientTestCase(TestCase):

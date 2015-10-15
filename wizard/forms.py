@@ -28,3 +28,4 @@ class ScaleForm(forms.Form):
 
 class ConfigForm(forms.Form):
     min = forms.IntegerField(label=u'Start with units')
+    process = forms.ChoiceField()

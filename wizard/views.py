@@ -24,6 +24,22 @@ def app_info(name, token):
     return None
 
 
+def process_list(instance_name, token):
+    token = urllib.unquote(token)
+    token = "bearer {}".format(token)
+    app = app_info(instance_name, token)
+    process = set()
+
+    for u in app.get('units', []):
+        process.add(u['ProcessName'])
+
+    p_list = []
+    for u in list(process):
+        p_list.append((u, u))
+
+    return p_list
+
+
 def get_or_create_tsuru_instance(instance_name, token):
     token = urllib.unquote(token)
     token = "bearer {}".format(token)
@@ -50,6 +66,8 @@ def new(request, instance=None):
     scale_up_form = forms.ScaleForm(request.POST or None, prefix="scale_up", initial={"operator": ">"})
     scale_down_form = forms.ScaleForm(request.POST or None, prefix="scale_down", initial={"operator": "<"})
     config_form = forms.ConfigForm(request.POST or None)
+    p_list = process_list(instance, token)
+    config_form.fields['process'].choices = p_list
 
     if scale_up_form.is_valid() and scale_down_form.is_valid() and config_form.is_valid():
         get_or_create_tsuru_instance(instance, token)
