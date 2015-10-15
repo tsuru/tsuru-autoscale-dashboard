@@ -76,6 +76,7 @@ def new(request, instance=None):
             "minUnits": config_form.cleaned_data["min"],
             "scaleUp": scale_up_form.cleaned_data,
             "scaleDown": scale_down_form.cleaned_data,
+            "process": config_form.cleaned_data["process"],
         }
         client.new(config_data, token)
         messages.success(request, u"Auto scale saved.")
