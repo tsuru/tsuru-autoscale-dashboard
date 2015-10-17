@@ -20,3 +20,10 @@ def get(name, token):
     headers = {"Authorization": token}
     response = requests.get(url, headers=headers)
     return response
+
+
+def remove(name, token):
+    url = "{}/wizard/{}".format(host(), name)
+    headers = {"Authorization": token}
+    response = requests.delete(url, headers=headers)
+    return response

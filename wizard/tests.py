@@ -94,3 +94,23 @@ class ClientTestCase(TestCase):
         )
 
         client.get("name", "token")
+
+    def test_remove(self):
+        os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
+        httpretty.register_uri(
+            httpretty.DELETE,
+            "http://autoscalehost.com/wizard/name",
+        )
+
+        client.remove("name", "token")
+
+
+class RemoveTestCase(TestCase):
+    @mock.patch("wizard.client.remove")
+    def test_remove(self, remove_mock):
+        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-remove", args=["name"]))
+        response = self.client.get(url)
+
+        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new"))
+        self.assertIn(url, response.url)
+        remove_mock.assert_called_with("name", "bla")

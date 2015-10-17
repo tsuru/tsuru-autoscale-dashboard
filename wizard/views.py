@@ -92,3 +92,11 @@ def new(request, instance=None):
     }
 
     return render(request, "wizard/index.html", context)
+
+
+def remove(request, instance):
+    token = request.GET.get("TSURU_TOKEN")
+    client.remove(instance, token)
+    messages.success(request, u"Auto scale {} removed.".format(instance))
+    url = "{}?TSURU_TOKEN={}".format(reverse('wizard-new'), token)
+    return redirect(url)
