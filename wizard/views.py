@@ -98,5 +98,5 @@ def remove(request, instance):
     token = request.GET.get("TSURU_TOKEN")
     client.remove(instance, token)
     messages.success(request, u"Auto scale {} removed.".format(instance))
-    url = "{}?TSURU_TOKEN={}".format(reverse('wizard-new'), token)
+    url = "{}?TSURU_TOKEN={}".format(reverse('wizard-new', args=[instance]), token)
     return redirect(url)

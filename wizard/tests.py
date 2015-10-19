@@ -111,6 +111,6 @@ class RemoveTestCase(TestCase):
         url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-remove", args=["name"]))
         response = self.client.get(url)
 
-        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new"))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["name"]))
         self.assertIn(url, response.url)
         remove_mock.assert_called_with("name", "bla")
