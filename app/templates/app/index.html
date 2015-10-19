@@ -12,6 +12,7 @@
     <p><strong>Expression:</strong> {{ auto_scale.scaleDown.metric }} {{ auto_scale.scaleDown.operator }} {{ auto_scale.scaleDown.value }}</p>
     <p><strong>Step (in units):</strong> {{ auto_scale.scaleDown.step }} </p>
     <p><strong>Wait time (in seconds):</strong> {{ auto_scale.scaleDown.wait }}</p>
+    <a href="{% url 'wizard-remove' instance%}">remove auto scale</a>
     {% else %}
         <a href="{% url 'wizard-new' app %}?TSURU_TOKEN={{ token }}" class="btn btn-default">add auto scale</a>
     {% endif %}
