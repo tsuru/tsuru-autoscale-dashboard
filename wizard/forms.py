@@ -10,16 +10,8 @@ OPERATOR_CHOICES = (
 )
 
 
-METRIC_CHOICES = (
-    ('cpu', 'cpu'),
-    ('memory', 'memory'),
-    ('request/min', 'request/min'),
-    ('response time', 'response time'),
-)
-
-
 class ScaleForm(forms.Form):
-    metric = forms.ChoiceField(METRIC_CHOICES)
+    metric = forms.ChoiceField()
     operator = forms.ChoiceField(OPERATOR_CHOICES)
     value = forms.CharField()
     step = forms.CharField(label=u'Step (in units)')

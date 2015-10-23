@@ -39,13 +39,15 @@ class ConfigFormTest(TestCase):
 
 class IndexTestCase(TestCase):
     @mock.patch("wizard.views.process_list")
-    def test_index(self, process_mock):
+    @mock.patch("datasource.client.list")
+    def test_index(self, dlist_mock, process_mock):
         url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["instance"]))
         response = self.client.get(url)
         self.assertTemplateUsed(response, "wizard/index.html")
 
     @mock.patch("wizard.views.process_list")
-    def test_forms_prefix(self, process_mock):
+    @mock.patch("datasource.client.list")
+    def test_forms_prefix(self, dlist_mock, process_mock):
         url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["instance"]))
         response = self.client.get(url)
 
@@ -58,7 +60,8 @@ class IndexTestCase(TestCase):
             self.assertEqual(response.context[f].prefix, prefix)
 
     @mock.patch("wizard.views.process_list")
-    def test_config_process_list(self, process_mock):
+    @mock.patch("datasource.client.list")
+    def test_config_process_list(self, dlist_mock, process_mock):
         process = [("web", "web")]
         process_mock.return_value = process
 
@@ -67,6 +70,25 @@ class IndexTestCase(TestCase):
 
         choices = response.context["config_form"].fields["process"].choices
         self.assertListEqual(process, choices)
+
+    @mock.patch("wizard.views.process_list")
+    @mock.patch("datasource.client.list")
+    def test_scale_metrics(self, dlist_mock, process_mock):
+        data = [{"Name": "cpu"}, {"Name": "mem"}]
+        response_mock = mock.Mock()
+        response_mock.json.return_value = data
+        dlist_mock.return_value = response_mock
+
+        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["instance"]))
+        response = self.client.get(url)
+
+        expected_choices = [("cpu", "cpu"), ("mem", "mem")]
+
+        choices = response.context["scale_up_form"].fields["metric"].choices
+        self.assertListEqual(expected_choices, choices)
+
+        choices = response.context["scale_down_form"].fields["metric"].choices
+        self.assertListEqual(expected_choices, choices)
 
 
 class ClientTestCase(TestCase):

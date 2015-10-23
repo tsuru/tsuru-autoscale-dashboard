@@ -4,6 +4,7 @@ from django.contrib import messages
 
 from wizard import forms
 from wizard import client
+from datasource import client as dclient
 
 import requests
 import os
@@ -63,9 +64,16 @@ def get_or_create_tsuru_instance(instance_name, token):
 def new(request, instance=None):
     token = request.GET.get("TSURU_TOKEN")
 
+    dlist = [(d["Name"], d["Name"]) for d in dclient.list(token).json()]
+
     scale_up_form = forms.ScaleForm(request.POST or None, prefix="scale_up", initial={"operator": ">"})
+    scale_up_form.fields['metric'].choices = dlist
+
     scale_down_form = forms.ScaleForm(request.POST or None, prefix="scale_down", initial={"operator": "<"})
+    scale_down_form.fields['metric'].choices = dlist
+
     config_form = forms.ConfigForm(request.POST or None)
+
     p_list = process_list(instance, token)
     config_form.fields['process'].choices = p_list
 
