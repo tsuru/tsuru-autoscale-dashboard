@@ -20,7 +20,7 @@ def new(data, token):
 
 
 def list(token):
-    url = "{}/datasource".format(host())
+    url = "{}/datasource?public=true".format(host())
     headers = {"Authorization": token}
     response = requests.get(url, headers=headers)
     return response

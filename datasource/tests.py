@@ -122,6 +122,8 @@ class ClientTestCase(TestCase):
 
         client.list("token")
 
+        self.assertDictEqual(httpretty.last_request().querystring, {"public": ["true"]})
+
     def test_remove(self):
         os.environ["AUTOSCALE_HOST"] = "http://autoscalehost.com"
         httpretty.register_uri(
