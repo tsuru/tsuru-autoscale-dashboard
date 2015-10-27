@@ -27,3 +27,10 @@ def remove(name, token):
     headers = {"Authorization": token}
     response = requests.delete(url, headers=headers)
     return response
+
+
+def events(name, token):
+    url = "{}/wizard/{}/events".format(host(), name)
+    headers = {"Authorization": token}
+    response = requests.get(url, headers=headers)
+    return response
