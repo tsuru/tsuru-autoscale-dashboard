@@ -12,6 +12,31 @@
     <p><strong>Expression:</strong> {{ auto_scale.scaleDown.metric }} {{ auto_scale.scaleDown.operator }} {{ auto_scale.scaleDown.value }}</p>
     <p><strong>Step (in units):</strong> {{ auto_scale.scaleDown.step }} </p>
     <p><strong>Wait time (in seconds):</strong> {{ auto_scale.scaleDown.wait }}</p>
+    {% if events %}
+    <h3>{{ events|length }} events</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>action</th>
+                <th>start</th>
+                <th>end</th>
+                <th>successful</th>
+                <th>error</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+        <tr>
+            <td>{{ event.Action.Name}}</td>
+            <td>{{ event.StartTime }}</td>
+            <td>{{ event.EndTime }}</td>
+            <td>{{ event.Successful }}</td>
+            <td>{{ event.Error }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
     <a href="{% url 'wizard-remove' instance.Name %}?TSURU_TOKEN={{ token }}">remove auto scale</a>
     {% else %}
         <a href="{% url 'wizard-new' app %}?TSURU_TOKEN={{ token }}" class="btn btn-default">add auto scale</a>
