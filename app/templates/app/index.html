@@ -13,7 +13,7 @@
     <p><strong>Step (in units):</strong> {{ auto_scale.scaleDown.step }} </p>
     <p><strong>Wait time (in seconds):</strong> {{ auto_scale.scaleDown.wait }}</p>
     {% if events %}
-    <h3>{{ events|length }} events</h3>
+    <h3>events</h3>
     <table class="table">
         <thead>
             <tr>
@@ -26,6 +26,7 @@
         </thead>
         <tbody>
         {% for event in events %}
+        {% if event.Action.Name != "enable_alarm" and event.Action.Name != "disable_alarm" %}
         <tr>
             <td>{{ event.Action.Name}}</td>
             <td>{{ event.StartTime }}</td>
@@ -33,6 +34,7 @@
             <td>{{ event.Successful }}</td>
             <td>{{ event.Error }}</td>
         </tr>
+        {% endif %}
         {% endfor %}
         </tbody>
     </table>
