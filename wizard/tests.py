@@ -17,6 +17,7 @@ class ScaleFormTest(TestCase):
             "value": True,
             "step": True,
             "wait": True,
+            "aggregator": True,
         }
 
         form = forms.ScaleForm()
