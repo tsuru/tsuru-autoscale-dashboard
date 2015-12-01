@@ -56,7 +56,7 @@ def get_or_create_tsuru_instance(instance_name, token):
     data = {"service_name": "autoscale", "name": instance_name, "owner": app["teamowner"]}
     response = requests.post(url, headers=headers, data=json.dumps(data))
 
-    url = "{}/services/instances/{}/{}".format(tsuru_host(), instance_name, instance_name)
+    url = "{}/services/{}/instances/{}/{}".format(tsuru_host(), "autoscale", instance_name, instance_name)
     headers = {"Authorization": token}
     response = requests.put(url, headers=headers)
 
