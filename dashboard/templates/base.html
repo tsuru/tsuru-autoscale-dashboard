@@ -1,6 +1,6 @@
-{% extends 'base.html' %}
+{% load staticfiles %}
 
-{% block head %}
+{% block header %}
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 {% endblock %}
 
@@ -10,6 +10,5 @@
 
 	{#% bootstrap_messages %#}
 
-	{% block content %}{% endblock %}
 </div>
 {% endblock %}
