@@ -1,6 +1,34 @@
-{% extends 'base.html' %}
+{% extends "apps/base.html" %}
 
-{% block content %}
+{% block header %}
+<h1>{{ app }}</h1>
+ {% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-default">
+    <div class="navbar-inner">
+        <ul class="nav navbar-nav">
+            <li>
+                <a title="resources" href="{% url 'detail-app' app %}">resources</a>
+            </li>
+            <li>
+                <a title="deploys" href="{% url 'app-deploys' app %}">deploys</a>
+            </li>
+            <li>
+                <a title="log" href="{% url 'app_log' app %}">log</a>
+            </li>
+            <li>
+                <a title="settings" href="{% url 'app-settings' app %}">settings</a>
+            </li>
+            <li class="active">
+                <a title="autoscale" href="{% url 'app-settings' app %}">autoscale</a>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block app-content %}
     {% if auto_scale %}
     <p><strong>Start with units:</strong> {{ auto_scale.minUnits }}</p>
 

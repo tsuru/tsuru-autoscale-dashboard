@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'^action/', include('tsuru_autoscale.action.urls')),
     url(r'^instance/', include('tsuru_autoscale.instance.urls')),
     url(r'^wizard/', include('tsuru_autoscale.wizard.urls')),
-    url(r'^app/', include('tsuru_autoscale.app.urls')),
+    url(r'^', include('tsuru_autoscale.app.urls')),
 ]

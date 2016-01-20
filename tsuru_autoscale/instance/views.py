@@ -4,8 +4,8 @@ from tsuru_autoscale.instance import client
 from tsuru_autoscale.event import client as eclient
 
 
-def list(request):
-    token = request.GET.get("TSURU_TOKEN")
+def list(request, app_name=None):
+    token = request.session.get('tsuru_token').split(" ")[-1]
     instances = client.list(token).json()
     context = {
         "list": instances,
@@ -14,7 +14,7 @@ def list(request):
 
 
 def get(request, name):
-    token = request.GET.get("TSURU_TOKEN")
+    token = request.session.get('tsuru_token').split(" ")[-1]
     instance = client.get(name, token).json()
     alarms = client.alarms_by_instance(name, token).json() or []
 

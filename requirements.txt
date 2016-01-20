@@ -1,5 +1,4 @@
-Django==1.8.7
+Django==1.9.1
 requests==2.6.2
-django-bootstrap3==5.4.0
 gunicorn==19.3.0
 raven==4.2.3

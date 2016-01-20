@@ -7,7 +7,7 @@ import urllib
 
 
 def index(request, app):
-    token = request.GET.get("TSURU_TOKEN")
+    token = request.session.get('tsuru_token').split(" ")[-1]
     instances = client.list(token).json() or []
 
     instance = None
