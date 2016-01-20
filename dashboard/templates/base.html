@@ -1,17 +1,14 @@
-{% extends 'bootstrap3/bootstrap3.html' %}
+{% extends 'base.html' %}
 
-{% load bootstrap3 %}
-{% load staticfiles %}
-
-{% block bootstrap3_extra_head %}
+{% block head %}
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 {% endblock %}
 
-{% block bootstrap3_content %}
+{% block content %}
 <div class="container">
 	<h1>{% block title %}{% endblock %}</h1>
 
-	{% bootstrap_messages %}
+	{#% bootstrap_messages %#}
 
 	{% block content %}{% endblock %}
 </div>

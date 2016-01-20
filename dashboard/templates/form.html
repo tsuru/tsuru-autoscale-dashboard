@@ -1,7 +1,4 @@
-{% load bootstrap3 %}
-
 <form method="POST" action="?TSURU_TOKEN={{ request.token }}">
     {% csrf_token %}
-    {% bootstrap_form form %}
-    {% buttons submit='OK' reset="Cancel" %}{% endbuttons %}
+    {#% bootstrap_form form %#}
 </form>

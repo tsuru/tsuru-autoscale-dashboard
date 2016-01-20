@@ -15,8 +15,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'tsuru_autoscale',
-
-    'bootstrap3',
 )
 
 MIDDLEWARE_CLASSES = (
