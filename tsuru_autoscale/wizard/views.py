@@ -62,7 +62,7 @@ def get_or_create_tsuru_instance(instance_name, token):
 
 
 def new(request, instance=None):
-    token = request.GET.get("TSURU_TOKEN")
+    token = request.session.get('tsuru_token').split(" ")[-1]
 
     dlist = [(d["Name"], d["Name"]) for d in dclient.list(token).json()]
 
@@ -103,7 +103,7 @@ def new(request, instance=None):
 
 
 def remove(request, instance):
-    token = request.GET.get("TSURU_TOKEN")
+    token = request.session.get('tsuru_token').split(" ")[-1]
     client.remove(instance, token)
     messages.success(request, u"Auto scale {} removed.".format(instance))
     url = "{}?TSURU_TOKEN={}".format(reverse("app-info", args=[instance]), urllib.quote(token))
