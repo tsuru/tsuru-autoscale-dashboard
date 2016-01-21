@@ -14,6 +14,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'tsuru_dashboard',
     'tsuru_autoscale',
 )
 

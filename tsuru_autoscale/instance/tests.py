@@ -1,7 +1,10 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from tsuru_autoscale.instance import client
+
+from importlib import import_module
 
 import httpretty
 import mock
@@ -10,6 +13,16 @@ import os
 
 
 class ListTestCase(TestCase):
+    def setUp(self):
+        settings.SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+        engine = import_module(settings.SESSION_ENGINE)
+        store = engine.SessionStore()
+        store.save()
+        self.session = store
+        self.client.cookies[settings.SESSION_COOKIE_NAME] = store.session_key
+        self.session["tsuru_token"] = "b bla"
+        self.session.save()
+
     @mock.patch("tsuru_autoscale.instance.client.list")
     def test_list(self, list_mock):
         url = "{}?TSURU_TOKEN=bla".format(reverse("instance-list"))
@@ -21,9 +34,19 @@ class ListTestCase(TestCase):
 
 
 class GetTestCase(TestCase):
+    def setUp(self):
+        settings.SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+        engine = import_module(settings.SESSION_ENGINE)
+        store = engine.SessionStore()
+        store.save()
+        self.session = store
+        self.client.cookies[settings.SESSION_COOKIE_NAME] = store.session_key
+        self.session["tsuru_token"] = "b bla"
+        self.session.save()
+
     @mock.patch("tsuru_autoscale.instance.client.alarms_by_instance")
     @mock.patch("tsuru_autoscale.instance.client.get")
-    def test_get_without_alamrs(self, list_mock, alarms_by_instance_mock):
+    def test_get_without_alarms(self, list_mock, alarms_by_instance_mock):
         json_mock = mock.Mock()
         json_mock.json.return_value = {"Name": "instance"}
         list_mock.return_value = json_mock
