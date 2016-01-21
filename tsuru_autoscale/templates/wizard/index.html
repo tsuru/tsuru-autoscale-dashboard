@@ -6,15 +6,18 @@
 <form method="POST" action="?TSURU_TOKEN={{ token }}" class="form-horizontal">
     {% csrf_token %}
     <fieldset>
-        {#% bootstrap_form config_form layout="horizontal" %#}
+        {{ config_form.as_p }}
     </fieldset>
     <fieldset>
         <legend>Scale up</legend>
-        {#% bootstrap_form scale_up_form layout="horizontal" %#}
+        {{ scale_up_form.as_p }}
     </fieldset>
     <fieldset class="elist">
         <legend>Scale down</legend>
-        {#% bootstrap_form scale_down_form layout="horizontal" %#}
+        {{ scale_down_form.as_p }}
+    </fieldset>
+    <fieldset>
+        <button type="submit">OK</button>
     </fieldset>
 </form>
 {% endblock %}
