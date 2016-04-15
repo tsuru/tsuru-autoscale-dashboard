@@ -34,10 +34,12 @@
 
     <h3>Scale up </h3>
     <p><strong>Expression:</strong> {{ auto_scale.scaleUp.metric }} {{ auto_scale.scaleUp.operator }} {{ auto_scale.scaleUp.value }}</p>
+    <p><strong>Aggregator:</strong> {{ auto_scale.scaleUp.aggregator }}</p>
     <p><strong>Step (in units):</strong> {{ auto_scale.scaleUp.step }} </p>
     <p><strong>Wait time (in seconds):</strong> {{ auto_scale.scaleUp.wait }}</p>
     <h3>Scale down </h3>
     <p><strong>Expression:</strong> {{ auto_scale.scaleDown.metric }} {{ auto_scale.scaleDown.operator }} {{ auto_scale.scaleDown.value }}</p>
+    <p><strong>Aggregator:</strong> {{ auto_scale.scaleDown.aggregator }}</p>
     <p><strong>Step (in units):</strong> {{ auto_scale.scaleDown.step }} </p>
     <p><strong>Wait time (in seconds):</strong> {{ auto_scale.scaleDown.wait }}</p>
     {% if events %}
