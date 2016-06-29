@@ -9,7 +9,6 @@ from tsuru_autoscale.datasource import client as dclient
 import requests
 import os
 import urllib
-import json
 
 
 def tsuru_host():
@@ -44,21 +43,21 @@ def process_list(instance_name, token):
 def get_or_create_tsuru_instance(instance_name, token):
     token = urllib.unquote(token)
     token = "bearer {}".format(token)
-    url = "{}/services/instances/{}".format(tsuru_host(), instance_name)
+    url = "{}/services/autoscale/instances/{}".format(tsuru_host(), instance_name)
     headers = {"Authorization": token}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return
 
     app = app_info(instance_name, token)
-    url = "{}/services/instances".format(tsuru_host(), instance_name)
-    headers = {"Authorization": token}
+    url = "{}/services/autoscale/instances".format(tsuru_host(), instance_name)
+    headers = {"Authorization": token, "Content-Type": "application/x-www-form-urlencoded"}
     data = {"service_name": "autoscale", "name": instance_name, "owner": app["teamowner"]}
-    response = requests.post(url, headers=headers, data=json.dumps(data))
+    response = requests.post(url, headers=headers, data=data)
 
     url = "{}/services/{}/instances/{}/{}".format(tsuru_host(), "autoscale", instance_name, instance_name)
     headers = {"Authorization": token}
-    response = requests.put(url, headers=headers)
+    response = requests.put(url, headers=headers, data={"noRestart": "true"})
 
 
 def new(request, instance=None):
