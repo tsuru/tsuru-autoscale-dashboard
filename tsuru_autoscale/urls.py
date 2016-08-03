@@ -1,8 +1,10 @@
 from django.conf.urls import include, url
 
+from tsuru_autoscale.instance import views
+
 
 urlpatterns = [
-    url(r'^instance/$', 'tsuru_autoscale.instance.views.list', name='instance-list'),
+    url(r'^instance/$', views.list, name='instance-list'),
     url(r'^datasource/', include('tsuru_autoscale.datasource.urls')),
     url(r'^alarm/', include('tsuru_autoscale.alarm.urls')),
     url(r'^action/', include('tsuru_autoscale.action.urls')),

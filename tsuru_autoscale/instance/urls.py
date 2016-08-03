@@ -1,6 +1,8 @@
 from django.conf.urls import url
 
+from tsuru_autoscale.instance import views
+
 
 urlpatterns = [
-    url(r'^(?P<name>[\w-]+)/$', 'tsuru_autoscale.instance.views.get', name='instance-get'),
+    url(r'^(?P<name>[\w-]+)/$', views.get, name='instance-get'),
 ]

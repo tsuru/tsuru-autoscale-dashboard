@@ -1,6 +1,7 @@
 from django.conf.urls import url
 
+from tsuru_autoscale.app import views
 
 urlpatterns = [
-    url(r'^apps/(?P<app>[\w-]+)/autoscale/$', "tsuru_autoscale.app.views.index", name='app-info'),
+    url(r'^apps/(?P<app>[\w-]+)/autoscale/$', views.index, name='app-info'),
 ]
