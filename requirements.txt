@@ -1,4 +1,4 @@
-Django==1.10
+Django==1.10.1
 requests==2.10.0
 gunicorn==19.6.0
 raven==4.2.3

@@ -100,10 +100,49 @@ def new(request, instance=None):
 
     return render(request, "wizard/index.html", context)
 
+def unbind_and_remove_instance(token):
+    token = urllib.unquote(token)
+    token = "bearer {}".format(token)
+    url = "{}/services/autoscale/instances/{}".format(tsuru_host(), instance_name)
+    headers = {"Authorization": token}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return
 
+    url = "{}/services/autoscale/instances/{}/{}".format(tsuru_host(), instance_name, instance_name)
+
+        app = app_info(instance_name, token)
+        url = "{}/services/autoscale/instances".format(tsuru_host(), instance_name)
+        headers = {"Authorization": token, "Content-Type": "application/x-www-form-urlencoded"}
+        data = {"service_name": "autoscale", "name": instance_name, "owner": app["teamowner"]}
+        response = requests.post(url, headers=headers, data=data)
+
+        url = "{}/services/{}/instances/{}/{}".format(tsuru_host(), "autoscale", instance_name, instance_name)
+        headers = {"Authorization": token}
+        response = requests.put(url, headers=headers, data={"noRestart": "true"})
 def remove(request, instance):
     token = request.session.get('tsuru_token').split(" ")[-1]
     client.remove(instance, token)
     messages.success(request, u"Auto scale {} removed.".format(instance))
     url = "{}?TSURU_TOKEN={}".format(reverse("app-info", args=[instance]), urllib.quote(token))
-    return redirect(url)
+    # return redirect(url)
+
+    token = urllib.unquote(token)
+    token = "bearer {}".format(token)
+    url = "{}/services/autoscale/instances/{}".format(tsuru_host(), instance_name)
+    headers = {"Authorization": token}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return
+
+    url = "{}/services/autoscale/instances/{}/{}".format(tsuru_host(), instance_name, instance_name)
+
+        app = app_info(instance_name, token)
+        url = "{}/services/autoscale/instances".format(tsuru_host(), instance_name)
+        headers = {"Authorization": token, "Content-Type": "application/x-www-form-urlencoded"}
+        data = {"service_name": "autoscale", "name": instance_name, "owner": app["teamowner"]}
+        response = requests.post(url, headers=headers, data=data)
+
+        url = "{}/services/{}/instances/{}/{}".format(tsuru_host(), "autoscale", instance_name, instance_name)
+        headers = {"Authorization": token}
+        response = requests.put(url, headers=headers, data={"noRestart": "true"})
