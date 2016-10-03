@@ -87,7 +87,7 @@ def new(request, instance=None):
         }
         client.new(config_data, token)
         messages.success(request, u"Auto scale saved.")
-        url = "{}?TSURU_TOKEN={}".format(reverse("app-info", args=[instance]), urllib.quote(token))
+        url = "{}?TSURU_TOKEN={}".format(reverse("autoscale-app-info", args=[instance]), urllib.quote(token))
         return redirect(url)
 
     token = urllib.quote(token)
@@ -105,5 +105,5 @@ def remove(request, instance):
     token = request.session.get('tsuru_token').split(" ")[-1]
     client.remove(instance, token)
     messages.success(request, u"Auto scale {} removed.".format(instance))
-    url = "{}?TSURU_TOKEN={}".format(reverse("app-info", args=[instance]), urllib.quote(token))
+    url = "{}?TSURU_TOKEN={}".format(reverse("autoscale-app-info", args=[instance]), urllib.quote(token))
     return redirect(url)

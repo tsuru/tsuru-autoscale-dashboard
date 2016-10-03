@@ -20,7 +20,7 @@ class IndexTestCase(TestCase):
 
     @mock.patch("tsuru_autoscale.instance.client.list")
     def test_index(self, list_mock):
-        url = "{}?TSURU_TOKEN=bla".format(reverse("app-info", args=["app"]))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("autoscale-app-info", args=["app"]))
         response = self.client.get(url)
         self.assertTemplateUsed(response, "app/index.html")
 
@@ -30,7 +30,7 @@ class IndexTestCase(TestCase):
         response_mock.json.return_value = None
         list_mock.return_value = response_mock
 
-        url = "{}?TSURU_TOKEN=bla".format(reverse("app-info", args=["app"]))
+        url = "{}?TSURU_TOKEN=bla".format(reverse("autoscale-app-info", args=["app"]))
         response = self.client.get(url)
 
         self.assertTemplateUsed(response, "app/index.html")
