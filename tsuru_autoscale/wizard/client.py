@@ -29,6 +29,13 @@ def remove(name, token):
     return response
 
 
+def enable(name, token):
+    url = "{}/wizard/{}/enable".format(host(), name)
+    headers = {"Authorization": token}
+    response = requests.post(url, headers=headers)
+    return response
+
+
 def events(name, token):
     url = "{}/wizard/{}/events".format(host(), name)
     headers = {"Authorization": token}
