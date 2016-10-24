@@ -178,3 +178,12 @@ class RemoveTestCase(TestCase):
         url = "{}?TSURU_TOKEN=bla".format(reverse("autoscale-app-info", args=["name"]))
         self.assertIn(url, response.url)
         enable_mock.assert_called_with("name", "bla")
+
+    @mock.patch("tsuru_autoscale.wizard.client.disable")
+    def test_disable(self, disable_mock):
+        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-disable", args=["name"]))
+        response = self.client.get(url)
+
+        url = "{}?TSURU_TOKEN=bla".format(reverse("autoscale-app-info", args=["name"]))
+        self.assertIn(url, response.url)
+        disable_mock.assert_called_with("name", "bla")

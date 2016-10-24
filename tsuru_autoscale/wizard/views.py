@@ -115,3 +115,11 @@ def enable(request, instance):
     messages.success(request, u"Auto scale {} enabled.".format(instance))
     url = "{}?TSURU_TOKEN={}".format(reverse("autoscale-app-info", args=[instance]), urllib.quote(token))
     return redirect(url)
+
+
+def disable(request, instance):
+    token = request.session.get('tsuru_token').split(" ")[-1]
+    client.disable(instance, token)
+    messages.success(request, u"Auto scale {} disabled.".format(instance))
+    url = "{}?TSURU_TOKEN={}".format(reverse("autoscale-app-info", args=[instance]), urllib.quote(token))
+    return redirect(url)
