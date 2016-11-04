@@ -1,7 +1,6 @@
 from setuptools import setup, find_packages
-from tsuru_autoscale import __version__
 
-
+exec(open('tsuru_autoscale/version.py').read())
 setup(
     name="tsuru_autoscale",
     url="https://github.com/tsuru/tsuru-autoscale-dashboard",
