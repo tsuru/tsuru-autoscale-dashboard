@@ -23,10 +23,11 @@ class ScaleFormTest(TestCase):
             "aggregator": True,
         }
 
-        form = forms.ScaleForm()
+        form = forms.ScaleForm(42)
 
         for field, required in fields.items():
             self.assertEqual(form.fields[field].required, required)
+        self.assertEqual(form.fields['wait'].min_value, 42)
 
 
 class ConfigFormTest(TestCase):
