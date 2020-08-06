@@ -6,7 +6,7 @@ deps: clean
 
 test: deps
 	@./manage.py test
-	@flake8 --max-line-length 110 .
+	@flake8 --max-line-length 150 .
 
 run: deps
 	@./manage.py runserver

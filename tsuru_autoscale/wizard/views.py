@@ -65,10 +65,10 @@ def new(request, instance=None):
 
     dlist = [(d["Name"], d["Name"]) for d in dclient.list(token).json()]
 
-    scale_up_form = forms.ScaleForm(request.POST or None, prefix="scale_up", initial={"operator": ">"})
+    scale_up_form = forms.ScaleForm(30, request.POST or None, prefix="scale_up", initial={"operator": ">"})
     scale_up_form.fields['metric'].choices = dlist
 
-    scale_down_form = forms.ScaleForm(request.POST or None, prefix="scale_down", initial={"operator": "<"})
+    scale_down_form = forms.ScaleForm(60, request.POST or None, prefix="scale_down", initial={"operator": "<"})
     scale_down_form.fields['metric'].choices = dlist
 
     config_form = forms.ConfigForm(request.POST or None)
