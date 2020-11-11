@@ -56,14 +56,14 @@ class IndexTestCase(TestCase):
     @mock.patch("tsuru_autoscale.wizard.views.process_list")
     @mock.patch("tsuru_autoscale.datasource.client.list")
     def test_index(self, dlist_mock, process_mock):
-        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["instance"]))
+        url = reverse("wizard-new", args=["instance"])
         response = self.client.get(url)
         self.assertTemplateUsed(response, "wizard/index.html")
 
     @mock.patch("tsuru_autoscale.wizard.views.process_list")
     @mock.patch("tsuru_autoscale.datasource.client.list")
     def test_forms_prefix(self, dlist_mock, process_mock):
-        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["instance"]))
+        url = reverse("wizard-new", args=["instance"])
         response = self.client.get(url)
 
         forms = {
@@ -80,7 +80,7 @@ class IndexTestCase(TestCase):
         process = [("web", "web")]
         process_mock.return_value = process
 
-        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["instance"]))
+        url = reverse("wizard-new", args=["instance"])
         response = self.client.get(url)
 
         choices = response.context["config_form"].fields["process"].choices
@@ -94,7 +94,7 @@ class IndexTestCase(TestCase):
         response_mock.json.return_value = data
         dlist_mock.return_value = response_mock
 
-        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-new", args=["instance"]))
+        url = reverse("wizard-new", args=["instance"])
         response = self.client.get(url)
 
         expected_choices = [("cpu", "cpu"), ("mem", "mem")]
@@ -164,27 +164,27 @@ class RemoveTestCase(TestCase):
 
     @mock.patch("tsuru_autoscale.wizard.client.remove")
     def test_remove(self, remove_mock):
-        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-remove", args=["name"]))
+        url = reverse("wizard-remove", args=["name"])
         response = self.client.get(url)
 
-        url = "{}?TSURU_TOKEN=bla".format(reverse("autoscale-app-info", args=["name"]))
+        url = reverse("autoscale-app-info", args=["name"])
         self.assertIn(url, response.url)
         remove_mock.assert_called_with("name", "bla")
 
     @mock.patch("tsuru_autoscale.wizard.client.enable")
     def test_enable(self, enable_mock):
-        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-enable", args=["name"]))
+        url = reverse("wizard-enable", args=["name"])
         response = self.client.get(url)
 
-        url = "{}?TSURU_TOKEN=bla".format(reverse("autoscale-app-info", args=["name"]))
+        url = reverse("autoscale-app-info", args=["name"])
         self.assertIn(url, response.url)
         enable_mock.assert_called_with("name", "bla")
 
     @mock.patch("tsuru_autoscale.wizard.client.disable")
     def test_disable(self, disable_mock):
-        url = "{}?TSURU_TOKEN=bla".format(reverse("wizard-disable", args=["name"]))
+        url = reverse("wizard-disable", args=["name"])
         response = self.client.get(url)
 
-        url = "{}?TSURU_TOKEN=bla".format(reverse("autoscale-app-info", args=["name"]))
+        url = reverse("autoscale-app-info", args=["name"])
         self.assertIn(url, response.url)
         disable_mock.assert_called_with("name", "bla")
