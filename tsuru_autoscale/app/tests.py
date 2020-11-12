@@ -18,19 +18,23 @@ class IndexTestCase(TestCase):
         self.session["tsuru_token"] = "b bla"
         self.session.save()
 
-    @mock.patch("tsuru_autoscale.wizard.client.app_info")
+    @mock.patch("tsuru_dashboard.auth.views.token_is_valid")
+    @mock.patch("tsuru_dashboard.apps.views.AppMixin.get_app")
     @mock.patch("tsuru_autoscale.instance.client.list")
-    def test_index(self, list_mock, app_info_mock):
-        app_info_mock.return_value = {"name": "myapp"}
+    def test_index(self, list_mock, get_app_mock, token_is_valid):
+        get_app_mock.return_value = {"name": "myapp"}
+        token_is_valid.return_value = True
 
         url = "{}".format(reverse("autoscale-app-info", args=["app"]))
         response = self.client.get(url)
         self.assertTemplateUsed(response, "app/index.html")
 
-    @mock.patch("tsuru_autoscale.wizard.client.app_info")
+    @mock.patch("tsuru_dashboard.auth.views.token_is_valid")
+    @mock.patch("tsuru_dashboard.apps.views.AppMixin.get_app")
     @mock.patch("tsuru_autoscale.instance.client.list")
-    def test_index_instance_not_found(self, list_mock, app_info_mock):
-        app_info_mock.return_value = {"name": "myapp"}
+    def test_index_instance_not_found(self, list_mock, get_app_mock, token_is_valid):
+        get_app_mock.return_value = {"name": "myapp"}
+        token_is_valid.return_value = True
 
         response_mock = mock.Mock()
         response_mock.json.return_value = None

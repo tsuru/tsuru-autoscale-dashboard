@@ -1,41 +1,45 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
 from tsuru_autoscale.instance import client
 from tsuru_autoscale.wizard import client as wclient
-from tsuru_dashboard import engine
+from tsuru_dashboard.apps.views import AppMixin
 
 
-def index(request, app):
-    token = request.session.get('tsuru_token').split(" ")[-1]
-    instances = client.list(token).json() or []
+class AutoscaleApp(AppMixin, TemplateView):
+    template_name = 'app/index.html'
 
-    app_info = wclient.app_info(app, token)
-    pool_name = app_info.get('pool')
-    pool_info = wclient.pool_info(pool_name, token) if pool_name else None
+    def get_context_data(self, *args, **kwargs):
+        context = super(AutoscaleApp, self).get_context_data(*args, **kwargs)
 
-    provisioner = pool_info.get('provisioner') if pool_info else None
-    supports_native = provisioner == "kubernetes"
+        token = self.request.session.get('tsuru_token').split(" ")[-1]
+        instances = client.list(token).json() or []
 
-    instance = None
-    auto_scale = None
-    events = None
-    legacy = request.GET.get('legacy')
+        app = context.get('app', {})
+        pool_name = app.get('pool')
+        pool_info = wclient.pool_info(pool_name, token) if pool_name else None
 
-    for inst in instances:
-        if app in inst.get('Apps', []):
-            instance = inst
+        provisioner = pool_info.get('provisioner') if pool_info else None
+        supports_native = provisioner == "kubernetes"
 
-            response = wclient.get(instance["Name"], token)
-            if response.status_code == 200:
-                auto_scale = response.json()
-                events = wclient.events(instance["Name"], token).json()
-    context = {
-        "instance": instance,
-        "auto_scale": auto_scale,
-        "events": events,
-        "app": app_info,
-        "tabs": engine.get('app').tabs,
-        "supports_native": supports_native,
-        "is_legacy": legacy == "1" or legacy == "true" or legacy == "True" or not supports_native,
-    }
-    return render(request, "app/index.html", context)
+        instance = None
+        auto_scale = None
+        events = None
+        legacy = self.request.GET.get('legacy')
+
+        for inst in instances:
+            if app.get('name') in inst.get('Apps', []):
+                instance = inst
+
+                response = wclient.get(instance["Name"], token)
+                if response.status_code == 200:
+                    auto_scale = response.json()
+                    events = wclient.events(instance["Name"], token).json()
+
+        context.update({
+            "instance": instance,
+            "auto_scale": auto_scale,
+            "events": events,
+            "supports_native": supports_native,
+            "is_legacy": legacy == "1" or legacy == "true" or legacy == "True" or not supports_native,
+        })
+        return context
