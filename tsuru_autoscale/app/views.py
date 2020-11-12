@@ -10,7 +10,8 @@ def index(request, app):
     instances = client.list(token).json() or []
 
     app_info = wclient.app_info(app, token)
-    pool_info = wclient.pool_info(app_info.get('pool'), token)
+    pool_name = app_info.get('pool')
+    pool_info = wclient.pool_info(pool_name, token) if pool_name else None
 
     provisioner = pool_info.get('provisioner') if pool_info else None
     supports_native = provisioner == "kubernetes"
