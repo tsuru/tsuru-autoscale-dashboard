@@ -1,0 +1,41 @@
+.bs-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.bs-callout h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.bs-callout p:last-child {
+    margin-bottom: 0;
+}
+
+.bs-callout-danger {
+    border-left-color: #d9534f;
+}
+
+.bs-callout-danger h4 {
+    color: #d9534f;
+}
+
+.autoscale-type-area,
+.autoscale-item-area {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.autoscale-type-area h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.autoscale-type-area>.btn {
+    margin-top: 10px;
+}

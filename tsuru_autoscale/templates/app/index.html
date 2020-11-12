@@ -1,46 +1,9 @@
 {% extends "apps/base.html" %}
+{% load staticfiles %}
 
 {% block extra_css %}
 {{ block.super }}
-<style>
-  .bs-callout {
-    padding: 20px;
-    margin: 20px 0;
-    border: 1px solid #eee;
-    border-left-width: 5px;
-    border-radius: 3px;
-  }
-
-  .bs-callout h4 {
-    margin-top: 0;
-    margin-bottom: 5px;
-  }
-
-  .bs-callout p:last-child {
-    margin-bottom: 0;
-  }
-
-  .bs-callout-danger {
-    border-left-color: #d9534f;
-  }
-
-  .bs-callout-danger h4 {
-    color: #d9534f;
-  }
-
-  .autoscale-type-area,
-  .autoscale-item-area {
-    padding: 20px;
-    margin: 20px 0;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-  }
-
-  .autoscale-type-area h4 {
-    margin-top: 0;
-    margin-bottom: 5px;
-  }
-</style>
+<link rel="stylesheet" href="{% static "autoscale/css/app.css" %}">
 {% endblock %}
 
 {% block navbar %}
@@ -65,10 +28,10 @@
     <p><strong>Min units:</strong> {{ autoscale.minUnits }}</p>
     <p><strong>Max units:</strong> {{ autoscale.maxUnits }}</p>
     <p><strong>Target CPU:</strong> {{ autoscale.averageCPU }}</p>
-    <a href="{% url 'native-remove' app.name autoscale.process %}" class="btn btn-danger">remove auto scale</a>
+    <a href="{% url 'native-remove' app.name autoscale.process %}" class="btn btn-danger">remove</a>
   </div>
   {% endfor %}
-  <a href="{% url 'native-new' app.name %}" class="btn btn-default">add auto scale</a>
+  <a href="{% url 'native-new' app.name %}" class="btn btn-default">add</a>
 </div>
 
 {% if auto_scale or is_legacy %}
@@ -117,17 +80,17 @@
       </tbody>
     </table>
     {% endif %}
-    <a href="{% url 'wizard-remove' instance.Name %}" class="btn btn-danger">remove auto scale</a>
+    <a href="{% url 'wizard-remove' instance.Name %}" class="btn btn-danger">remove</a>
 
     {% if auto_scale.enabled %}
-    <a href="{% url 'wizard-disable' instance.Name %}" class="btn btn-warning">disable auto scale</a>
+    <a href="{% url 'wizard-disable' instance.Name %}" class="btn btn-warning">disable</a>
     {% else %}
-    <a href="{% url 'wizard-enable' instance.Name %}" class="btn btn-success">enable auto scale</a>
+    <a href="{% url 'wizard-enable' instance.Name %}" class="btn btn-success">enable</a>
     {% endif %}
 
   </div>
   {% else %}
-  <a href="{% url 'wizard-new' app.name %}" class="btn btn-default">add auto scale</a>
+  <a href="{% url 'wizard-new' app.name %}" class="btn btn-default">add</a>
   {% endif %}
 </div>
 {% endif %}
