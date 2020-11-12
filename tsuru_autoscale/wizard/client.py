@@ -30,6 +30,15 @@ def app_info(name, token):
     return None
 
 
+def pool_info(name, token):
+    url = "{}/pools/{}".format(tsuru_host(), name)
+    headers = {"Authorization": clean_token(token)}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+
 def process_list(instance_name, token):
     app = app_info(instance_name, token)
     process = set()

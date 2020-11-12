@@ -20,6 +20,7 @@
 </div>
 {% endif %}
 
+{% if supports_native %}
 <div class="autoscale-type-area">
   <h4>Native auto scale configurations</h4>
   {% for autoscale in app.autoscale %}
@@ -33,10 +34,11 @@
   {% endfor %}
   <a href="{% url 'native-new' app.name %}" class="btn btn-default">add</a>
 </div>
+{% endif %}
 
 {% if auto_scale or is_legacy %}
 <div class="autoscale-type-area">
-  <h4>Service based auto scale configurations</h4>
+  <h4>Service based auto scale configurations{% if supports_native %} (deprecated on kubernetes pools){% endif %}</h4>
   {% if auto_scale %}
   <div class="autoscale-item-area">
     <p><strong>Start with units:</strong> {{ auto_scale.minUnits }}</p>

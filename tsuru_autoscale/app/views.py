@@ -10,6 +10,10 @@ def index(request, app):
     instances = client.list(token).json() or []
 
     app_info = wclient.app_info(app, token)
+    pool_info = wclient.pool_info(app_info.get('pool'), token)
+
+    provisioner = pool_info.get('provisioner') if pool_info else None
+    supports_native = provisioner == "kubernetes"
 
     instance = None
     auto_scale = None
@@ -30,6 +34,7 @@ def index(request, app):
         "events": events,
         "app": app_info,
         "tabs": engine.get('app').tabs,
-        "is_legacy": legacy == "1" or legacy == "true" or legacy == "True",
+        "supports_native": supports_native,
+        "is_legacy": legacy == "1" or legacy == "true" or legacy == "True" or not supports_native,
     }
     return render(request, "app/index.html", context)
