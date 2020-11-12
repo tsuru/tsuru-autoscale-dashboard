@@ -7,55 +7,25 @@ from tsuru_autoscale.wizard import client
 from tsuru_autoscale.datasource import client as dclient
 
 import requests
-import os
 import urllib
-
-
-def tsuru_host():
-    return os.environ.get("TSURU_HOST", "")
-
-
-def app_info(name, token):
-    url = "{}/apps/{}".format(tsuru_host(), name)
-    headers = {"Authorization": token}
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        return response.json()
-    return None
-
-
-def process_list(instance_name, token):
-    token = urllib.unquote(token)
-    token = "bearer {}".format(token)
-    app = app_info(instance_name, token)
-    process = set()
-
-    for u in app.get('units', []):
-        process.add(u['ProcessName'])
-
-    p_list = []
-    for u in list(process):
-        p_list.append((u, u))
-
-    return p_list
 
 
 def get_or_create_tsuru_instance(instance_name, token):
     token = urllib.unquote(token)
     token = "bearer {}".format(token)
-    url = "{}/services/autoscale/instances/{}".format(tsuru_host(), instance_name)
+    url = "{}/services/autoscale/instances/{}".format(client.tsuru_host(), instance_name)
     headers = {"Authorization": token}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return
 
-    app = app_info(instance_name, token)
-    url = "{}/services/autoscale/instances".format(tsuru_host(), instance_name)
+    app = client.app_info(instance_name, token)
+    url = "{}/services/autoscale/instances".format(client.tsuru_host(), instance_name)
     headers = {"Authorization": token, "Content-Type": "application/x-www-form-urlencoded"}
     data = {"service_name": "autoscale", "name": instance_name, "owner": app["teamowner"]}
     response = requests.post(url, headers=headers, data=data)
 
-    url = "{}/services/{}/instances/{}/{}".format(tsuru_host(), "autoscale", instance_name, instance_name)
+    url = "{}/services/{}/instances/{}/{}".format(client.tsuru_host(), "autoscale", instance_name, instance_name)
     headers = {"Authorization": token}
     response = requests.put(url, headers=headers, data={"noRestart": "true"})
 
@@ -73,7 +43,7 @@ def new(request, instance=None):
 
     config_form = forms.ConfigForm(request.POST or None)
 
-    p_list = process_list(instance, token)
+    p_list = client.process_list(instance, token)
     config_form.fields['process'].choices = p_list
 
     if scale_up_form.is_valid() and scale_down_form.is_valid() and config_form.is_valid():

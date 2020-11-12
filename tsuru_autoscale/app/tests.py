@@ -18,19 +18,25 @@ class IndexTestCase(TestCase):
         self.session["tsuru_token"] = "b bla"
         self.session.save()
 
+    @mock.patch("tsuru_autoscale.wizard.client.app_info")
     @mock.patch("tsuru_autoscale.instance.client.list")
-    def test_index(self, list_mock):
-        url = "{}?TSURU_TOKEN=bla".format(reverse("autoscale-app-info", args=["app"]))
+    def test_index(self, list_mock, app_info_mock):
+        app_info_mock.return_value = {"name": "myapp"}
+
+        url = "{}".format(reverse("autoscale-app-info", args=["app"]))
         response = self.client.get(url)
         self.assertTemplateUsed(response, "app/index.html")
 
+    @mock.patch("tsuru_autoscale.wizard.client.app_info")
     @mock.patch("tsuru_autoscale.instance.client.list")
-    def test_index_instance_not_found(self, list_mock):
+    def test_index_instance_not_found(self, list_mock, app_info_mock):
+        app_info_mock.return_value = {"name": "myapp"}
+
         response_mock = mock.Mock()
         response_mock.json.return_value = None
         list_mock.return_value = response_mock
 
-        url = "{}?TSURU_TOKEN=bla".format(reverse("autoscale-app-info", args=["app"]))
+        url = "{}".format(reverse("autoscale-app-info", args=["app"]))
         response = self.client.get(url)
 
         self.assertTemplateUsed(response, "app/index.html")

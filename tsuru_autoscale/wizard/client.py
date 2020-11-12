@@ -1,11 +1,47 @@
 import os
 import json
+import urllib
 
 import requests
 
 
 def host():
     return os.environ.get("AUTOSCALE_HOST", "")
+
+
+def tsuru_host():
+    return os.environ.get("TSURU_HOST", "")
+
+
+def clean_token(token):
+    if token.lower().startswith("bearer "):
+        return token
+    token = urllib.unquote(token)
+    token = "bearer {}".format(token)
+    return token
+
+
+def app_info(name, token):
+    url = "{}/apps/{}".format(tsuru_host(), name)
+    headers = {"Authorization": clean_token(token)}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+
+def process_list(instance_name, token):
+    app = app_info(instance_name, token)
+    process = set()
+
+    for u in app.get('units', []):
+        process.add(u['ProcessName'])
+
+    p_list = []
+    for u in list(process):
+        p_list.append((u, u))
+
+    return p_list
 
 
 def new(data, token):

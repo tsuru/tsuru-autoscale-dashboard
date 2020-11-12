@@ -2,17 +2,19 @@ from django.shortcuts import render
 
 from tsuru_autoscale.instance import client
 from tsuru_autoscale.wizard import client as wclient
-
-import urllib
+from tsuru_dashboard import engine
 
 
 def index(request, app):
     token = request.session.get('tsuru_token').split(" ")[-1]
     instances = client.list(token).json() or []
 
+    app_info = wclient.app_info(app, token)
+
     instance = None
     auto_scale = None
     events = None
+    legacy = request.GET.get('legacy')
 
     for inst in instances:
         if app in inst.get('Apps', []):
@@ -25,8 +27,9 @@ def index(request, app):
     context = {
         "instance": instance,
         "auto_scale": auto_scale,
-        "token": urllib.quote(token),
-        "app": app,
         "events": events,
+        "app": app_info,
+        "tabs": engine.get('app').tabs,
+        "is_legacy": legacy == "1" or legacy == "true" or legacy == "True",
     }
     return render(request, "app/index.html", context)

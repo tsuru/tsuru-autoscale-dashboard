@@ -1,83 +1,135 @@
 {% extends "apps/base.html" %}
 
-{% block header %}
-<h1>{{ app }}</h1>
+{% block extra_css %}
+{{ block.super }}
+<style>
+  .bs-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+  }
+
+  .bs-callout h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+
+  .bs-callout p:last-child {
+    margin-bottom: 0;
+  }
+
+  .bs-callout-danger {
+    border-left-color: #d9534f;
+  }
+
+  .bs-callout-danger h4 {
+    color: #d9534f;
+  }
+
+  .autoscale-type-area,
+  .autoscale-item-area {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+
+  .autoscale-type-area h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+</style>
 {% endblock %}
 
 {% block navbar %}
-<div class="navbar navbar-default">
-  <div class="navbar-inner">
-    <ul class="nav navbar-nav">
-      <li>
-        <a title="resources" href="{% url 'app-resources' app %}">resources</a>
-      </li>
-      <li>
-        <a title="deploys" href="{% url 'app-deploys' app %}">deploys</a>
-      </li>
-      <li>
-        <a title="log" href="{% url 'app-log' app %}">log</a>
-      </li>
-      <li>
-        <a title="settings" href="{% url 'app-settings' app %}">settings</a>
-      </li>
-      <li class="active">
-        <a title="autoscale" href="{% url 'app-settings' app %}">autoscale</a>
-      </li>
-    </ul>
-  </div>
-</div>
+{% include "apps/navbar.html" with active="autoscale" %}
 {% endblock %}
 
 {% block app-content %}
-{% if auto_scale %}
-<p><strong>Start with units:</strong> {{ auto_scale.minUnits }}</p>
 
-<h3>Scale up </h3>
-<p><strong>Expression:</strong> {{ auto_scale.scaleUp.metric }} {{ auto_scale.scaleUp.operator }}
-  {{ auto_scale.scaleUp.value }}</p>
-<p><strong>Aggregator:</strong> {{ auto_scale.scaleUp.aggregator }}</p>
-<p><strong>Step (in units):</strong> {{ auto_scale.scaleUp.step }} </p>
-<p><strong>Wait time (in seconds):</strong> {{ auto_scale.scaleUp.wait }}</p>
-<h3>Scale down </h3>
-<p><strong>Expression:</strong> {{ auto_scale.scaleDown.metric }} {{ auto_scale.scaleDown.operator }}
-  {{ auto_scale.scaleDown.value }}</p>
-<p><strong>Aggregator:</strong> {{ auto_scale.scaleDown.aggregator }}</p>
-<p><strong>Step (in units):</strong> {{ auto_scale.scaleDown.step }} </p>
-<p><strong>Wait time (in seconds):</strong> {{ auto_scale.scaleDown.wait }}</p>
-{% if events %}
-<h3>events</h3>
-<table class="table">
-  <thead>
-    <tr>
-      <th>action</th>
-      <th>start</th>
-      <th>end</th>
-      <th>successful</th>
-      <th>error</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for event in events %}
-    {% if event.Action.Name != "enable_alarm" and event.Action.Name != "disable_alarm" %}
-    <tr>
-      <td>{{ event.Action.Name}}</td>
-      <td>{{ event.StartTime }}</td>
-      <td>{{ event.EndTime }}</td>
-      <td>{{ event.Successful }}</td>
-      <td>{{ event.Error }}</td>
-    </tr>
+{% if app.autoscale and auto_scale %}
+<div class="bs-callout bs-callout-danger">
+  <h4>Danger</h4>
+  <p>Both tsuru native autoscale and legacy service based autoscale are enabled
+    and will conflict with each other.</p>
+</div>
+{% endif %}
+
+<div class="autoscale-type-area">
+  <h4>Native auto scale configurations</h4>
+  {% for autoscale in app.autoscale %}
+  <div class="autoscale-item-area">
+    <p><strong>Process:</strong> {{ autoscale.process }} (version {{ autoscale.version }})</p>
+    <p><strong>Min units:</strong> {{ autoscale.minUnits }}</p>
+    <p><strong>Max units:</strong> {{ autoscale.maxUnits }}</p>
+    <p><strong>Target CPU:</strong> {{ autoscale.averageCPU }}</p>
+    <a href="{% url 'native-remove' app.name autoscale.process %}" class="btn btn-danger">remove auto scale</a>
+  </div>
+  {% endfor %}
+  <a href="{% url 'native-new' app.name %}" class="btn btn-default">add auto scale</a>
+</div>
+
+{% if auto_scale or is_legacy %}
+<div class="autoscale-type-area">
+  <h4>Service based auto scale configurations</h4>
+  {% if auto_scale %}
+  <div class="autoscale-item-area">
+    <p><strong>Start with units:</strong> {{ auto_scale.minUnits }}</p>
+
+    <h3>Scale up </h3>
+    <p><strong>Expression:</strong> {{ auto_scale.scaleUp.metric }} {{ auto_scale.scaleUp.operator }}
+      {{ auto_scale.scaleUp.value }}</p>
+    <p><strong>Aggregator:</strong> {{ auto_scale.scaleUp.aggregator }}</p>
+    <p><strong>Step (in units):</strong> {{ auto_scale.scaleUp.step }} </p>
+    <p><strong>Wait time (in seconds):</strong> {{ auto_scale.scaleUp.wait }}</p>
+    <h3>Scale down </h3>
+    <p><strong>Expression:</strong> {{ auto_scale.scaleDown.metric }} {{ auto_scale.scaleDown.operator }}
+      {{ auto_scale.scaleDown.value }}</p>
+    <p><strong>Aggregator:</strong> {{ auto_scale.scaleDown.aggregator }}</p>
+    <p><strong>Step (in units):</strong> {{ auto_scale.scaleDown.step }} </p>
+    <p><strong>Wait time (in seconds):</strong> {{ auto_scale.scaleDown.wait }}</p>
+    {% if events %}
+    <h3>events</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>action</th>
+          <th>start</th>
+          <th>end</th>
+          <th>successful</th>
+          <th>error</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for event in events %}
+        {% if event.Action.Name != "enable_alarm" and event.Action.Name != "disable_alarm" %}
+        <tr>
+          <td>{{ event.Action.Name}}</td>
+          <td>{{ event.StartTime }}</td>
+          <td>{{ event.EndTime }}</td>
+          <td>{{ event.Successful }}</td>
+          <td>{{ event.Error }}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
     {% endif %}
-    {% endfor %}
-  </tbody>
-</table>
+    <a href="{% url 'wizard-remove' instance.Name %}" class="btn btn-danger">remove auto scale</a>
+
+    {% if auto_scale.enabled %}
+    <a href="{% url 'wizard-disable' instance.Name %}" class="btn btn-warning">disable auto scale</a>
+    {% else %}
+    <a href="{% url 'wizard-enable' instance.Name %}" class="btn btn-success">enable auto scale</a>
+    {% endif %}
+
+  </div>
+  {% else %}
+  <a href="{% url 'wizard-new' app.name %}" class="btn btn-default">add auto scale</a>
+  {% endif %}
+</div>
 {% endif %}
-<a href="{% url 'wizard-remove' instance.Name %}">remove auto scale</a>
-{% if auto_scale.enabled %}
-<a href="{% url 'wizard-disable' instance.Name %}">disable auto scale</a>
-{% else %}
-<a href="{% url 'wizard-enable' instance.Name %}">enable auto scale</a>
-{% endif %}
-{% else %}
-<a href="{% url 'wizard-new' app %}" class="btn btn-default">add auto scale</a>
-{% endif %}
+
 {% endblock %}

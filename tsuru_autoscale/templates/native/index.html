@@ -1,0 +1,17 @@
+{% extends "apps/base.html" %}
+
+{% block navbar %}
+{% include "apps/navbar.html" with active="autoscale" %}
+{% endblock %}
+
+{% block app-content %}
+<div class="row">
+    <div class="col-md-6">
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-default">OK</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

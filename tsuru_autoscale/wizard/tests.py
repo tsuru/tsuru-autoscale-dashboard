@@ -53,14 +53,14 @@ class IndexTestCase(TestCase):
         self.session["tsuru_token"] = "b bla"
         self.session.save()
 
-    @mock.patch("tsuru_autoscale.wizard.views.process_list")
+    @mock.patch("tsuru_autoscale.wizard.client.process_list")
     @mock.patch("tsuru_autoscale.datasource.client.list")
     def test_index(self, dlist_mock, process_mock):
         url = reverse("wizard-new", args=["instance"])
         response = self.client.get(url)
         self.assertTemplateUsed(response, "wizard/index.html")
 
-    @mock.patch("tsuru_autoscale.wizard.views.process_list")
+    @mock.patch("tsuru_autoscale.wizard.client.process_list")
     @mock.patch("tsuru_autoscale.datasource.client.list")
     def test_forms_prefix(self, dlist_mock, process_mock):
         url = reverse("wizard-new", args=["instance"])
@@ -74,7 +74,7 @@ class IndexTestCase(TestCase):
         for f, prefix in forms.items():
             self.assertEqual(response.context[f].prefix, prefix)
 
-    @mock.patch("tsuru_autoscale.wizard.views.process_list")
+    @mock.patch("tsuru_autoscale.wizard.client.process_list")
     @mock.patch("tsuru_autoscale.datasource.client.list")
     def test_config_process_list(self, dlist_mock, process_mock):
         process = [("web", "web")]
@@ -86,7 +86,7 @@ class IndexTestCase(TestCase):
         choices = response.context["config_form"].fields["process"].choices
         self.assertListEqual(process, choices)
 
-    @mock.patch("tsuru_autoscale.wizard.views.process_list")
+    @mock.patch("tsuru_autoscale.wizard.client.process_list")
     @mock.patch("tsuru_autoscale.datasource.client.list")
     def test_scale_metrics(self, dlist_mock, process_mock):
         data = [{"Name": "cpu"}, {"Name": "mem"}]
