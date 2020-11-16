@@ -1,5 +1,6 @@
 {% extends "apps/base.html" %}
 {% load staticfiles %}
+{% load autoscale_filters %}
 
 {% block extra_css %}
 {{ block.super }}
@@ -20,7 +21,7 @@
 </div>
 {% endif %}
 
-{% if supports_native %}
+{% if supports_native or app.autoscale %}
 <div class="autoscale-type-area">
   <h4>Native auto scale configurations</h4>
   {% for autoscale in app.autoscale %}
@@ -28,7 +29,7 @@
     <p><strong>Process:</strong> {{ autoscale.process }} (version {{ autoscale.version }})</p>
     <p><strong>Min units:</strong> {{ autoscale.minUnits }}</p>
     <p><strong>Max units:</strong> {{ autoscale.maxUnits }}</p>
-    <p><strong>Target CPU:</strong> {{ autoscale.averageCPU }}</p>
+    <p><strong>Target CPU:</strong> {{ autoscale.averageCPU | resource_as_percent }}</p>
     <a href="{% url 'native-remove' app.name autoscale.process %}" class="btn btn-danger">remove</a>
   </div>
   {% endfor %}
