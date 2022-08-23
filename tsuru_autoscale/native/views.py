@@ -34,7 +34,7 @@ class NativeAutoscale(AppMixin, FormView):
             "process": form.cleaned_data["process"],
             "minUnits": form.cleaned_data["min_units"],
             "maxUnits": form.cleaned_data["max_units"],
-            "averageCPU": target_cpu,
+            "averageCPU": str(target_cpu),
         }
 
         try:
