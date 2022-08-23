@@ -29,18 +29,19 @@ class NativeAutoscale(AppMixin, FormView):
     def form_valid(self, form):
         token = self.request.session.get('tsuru_token').split(" ")[-1]
         app_name = self.kwargs.get('app_name')
-        cpuMilli = form.cleaned_data["target_cpu"] * 10
+        target_cpu = form.cleaned_data["target_cpu"]
         data = {
             "process": form.cleaned_data["process"],
             "minUnits": form.cleaned_data["min_units"],
             "maxUnits": form.cleaned_data["max_units"],
-            "averageCPU": '{}m'.format(cpuMilli),
+            "averageCPU": target_cpu,
         }
 
         try:
             add_autoscale(app_name, data, token)
         except Exception as e:
             messages.error(self.request, e)
+            return self.form_invalid(form)
         else:
             messages.success(self.request, u"Auto scale saved.")
             url = reverse("autoscale-app-info", args=[app_name])

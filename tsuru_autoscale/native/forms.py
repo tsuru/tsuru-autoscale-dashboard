@@ -9,6 +9,7 @@ class ScaleForm(forms.Form):
     max_units = forms.IntegerField(label=u'Max units', min_value=2, initial=2,
                                    widget=forms.NumberInput(attrs={'class': 'form-control'}))
     target_cpu = forms.IntegerField(label=u'Target CPU %', min_value=10, initial=50,
+                                    max_value=90,
                                     widget=forms.NumberInput(attrs={'class': 'form-control'}))
 
     def clean(self):
