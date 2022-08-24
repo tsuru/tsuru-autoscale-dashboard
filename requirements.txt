@@ -4,4 +4,4 @@ gunicorn==19.6.0
 raven==4.2.3
 tsuru_dashboard==0.15.0
 pymongo==3.3.0
-PyYAML==5.1
+PyYAML==5.4
