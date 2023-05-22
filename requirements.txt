@@ -1,5 +1,5 @@
 Django==1.11.29
-requests==2.20.0
+requests==2.31.0
 gunicorn==19.6.0
 raven==4.2.3
 tsuru_dashboard==0.15.0
